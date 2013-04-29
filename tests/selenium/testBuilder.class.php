@@ -67,10 +67,10 @@
 		/**
 		 * Add a selenium test to the file
 		 * @param $action the selenium action (first column)
-		 * @param $selector the selector to select the object to work on (second column)
+		 * @param $selector (optional) the selector to select the object to work on (second column)
 		 * @param $value (optional) the expected (or not) value (third column)
 		 */
-		public function test($action, $selector, $value='') {
+		public function test($action, $selector='', $value='') {
 			echo "<tr>\n<td>$action</td>\n<td>$selector</td>\n<td>$value</td>\n</tr>\n";
 		}
 
@@ -85,6 +85,7 @@
 		 */
 		public function login($u, $p) {
 			$this->addComment("Login as {$this->server['username']}");
+			$this->test('deleteAllVisibleCookies');
 			$this->test('open', "{$this->webUrl}/intro.php");
 			$this->select('language', 'English');
 			$this->test('open', "{$this->webUrl}/login.php?server={$this->data->conn->host}&subject=server");
@@ -167,6 +168,13 @@
 		 */
 		public function clickAndWait($selector) {
 			$this->test('clickAndWait', $selector);
+		}
+
+		/**
+		 * Add a selenium deleteAllVisibleCookies test to the file
+		 */
+		public function deleteAllVisibleCookies() {
+			$this->test('DeleteAllVisibleCookies');
 		}
 
 		/**
