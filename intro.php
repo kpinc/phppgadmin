@@ -66,7 +66,10 @@
 	if (file_exists('./tests/selenium/config.test.php')) {
 	   ?><a target="_top" href="tests/selenium/selenium-lib/core/TestRunner.html?test=..%2F..%2FTestSuite.php&resultsUrl=..%2FpostResults"><?php
 	   echo $lang['strseleniumtestsenabled'];
-	   ?></a><?php
+	   ?></a>
+	   </li>
+	   <li><a href="reset_selenium.php"><?php echo $lang['strresetselenium']; ?></a>
+	   <?php
 	} else {
 	   echo $lang['strseleniumtestsdisabled']; 
 	};

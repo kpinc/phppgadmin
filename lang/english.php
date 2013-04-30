@@ -23,7 +23,8 @@
 	$lang['strviewfaq_url'] = 'http://phppgadmin.sourceforge.net/doku.php?id=faq';
 	$lang['strseleniumtestsenabled'] = 'phpPgAdmin Selenium self-diagnostic tests';
 	$lang['strseleniumtestsdisabled'] = 'The phpPgAdmin Selenium self-diagnostic tests are not configured';
-	
+	$lang['strresetselenium'] = 'Reset PPA diagnostic self-test PG server state';
+
 	// Basic strings
 	$lang['strlogin'] = 'Login';
 	$lang['strloginfailed'] = 'Login failed';
