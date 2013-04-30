@@ -2,16 +2,17 @@ HowTo run the tests
 ~~~~~~~~~~~~~~~~~~~
 
 1. Create & configure your ./tests/selenium/config.test.php (See
-sample one in ./tests/selenium/config.inc.php-dist)
+the sample one in "./tests/selenium/config.inc.php-dist".)
 
 2. Make sure "$conf['show_system']" is set to "true" in your
-"./conf/config.inc.php"
-
-3. Make sure "$conf['extra_login_security']" is set to "false" in your
 "./conf/config.inc.php" file.
 
+3. Make sure "$conf['extra_login_security']" is set to "false" in your
+"./conf/config.inc.php" file.  (And make sure this is a good idea.)
+
 4. Open your browser and go to http://$webUrl/ Where $webUrl is the
-value set in your ./tests/selenium/config.inc.php
+value set in your "./tests/selenium/config.inc.php".  (Your ppa home
+page.)
 
 5. Click on "Selenium tests" on the PPA intro page & run the tests
 using the "Selenium TestRunner" buttons in the top-right frame.
@@ -22,51 +23,97 @@ Enjoy the tests.
 HowTo write new tests
 ~~~~~~~~~~~~~~~~~~~~~
 
-Normaly, the selenium's statis HTML tests files cannot behave
-differently in regard to the PG backend where the tests are run on. In
-order to address this issue we are using PHP scripts that connect to
-each backends using the PPA database classes and allow you to use
-their methods, and especialy the $data->has*() ones, throught the
-$data variable like in any other ppa script.
+The Selenium testing framework uses javascript imbedded in static HTML
+files to perform it's tests.  The ppa test framework builds the
+necessary static HTML files.  TestSuite.php is the script used to do
+this.  It builds the list of test groups which appear in the top left
+frame of the Selenium control panel.  But TestSuite.php should not be
+modified, it uses test scripts to construct the actual tests.  These
+scripts are what need to be created to make new ppa self-diagnostic
+tests.
 
-TestSuite.php is the test suite script that build the list of tests
-groups (top left frame).
+See the Selenium documentation (found in
+"tests/selenium/selenium-lib/reference.html") for further information
+on the Selenium commands (actions, accessors, and assertions), or just
+take a look at the existing ppa test scripts to see how it's done.
 
-1. how TestSuite.php is working and why TestSuite.php script is
-processing the test-builders scripts from ./tests/selenium/src in
-alphanumeric order. That's why each test-builder's name should follow
-these rules: begin with 2numeric number, then -, then the script name
-(ex. 01-test1.php or 46-test46.php).
+Because the selenium HTML files are static, normal use of the Selenium
+test suite would be unable to dynamically adapt to changes in the PG
+backend against which the tests are run.  In order to address this
+issue PPA uses PHP scripts that connect to each backends using the PPA
+database classes and allow you to use their methods, and especially the
+$data->has*() ones but also the other $data methods and variables,
+throughout the ppa test scripts in the same fashion as in any other
+ppa script.  This dynamic generation of the static Selenium test files
+is performed when the Selenium control panel is first displayed.  In
+this way the ppa self-diagnostics can adjust to backend PG version and
+other aspects of the PG back-end in use.
 
-It allows to enforce the order the scripts will be run during the
-testSuite. This way, column's tests could be run *after* the table's
-tests in the test suite and use the previous created tables.
+1. Ordering the tests.
+
+Selenium tests are composed of individual steps, or "commands".  Each
+step exercises a particular user interface element, clicks on a
+button, types into a field, and so forth; or does other things like
+examine the resulting page content.  Together the commands make up a
+test.  The ppa tests sometimes rely on the state of the PG db
+established by previous tests.  In particular, every subsequent test
+relies on the first 2 tests, which creates a testing database and the db
+roles used to manipulate it.  Therefore it is important that the tests
+be executed in a deterministic order.
+
+The TestSuite.php script processes the test-builder's scripts from
+./tests/selenium/src in alphanumeric order. That's why each script
+name should follow these rules: begin with a 2 digit number, then -,
+then the script name (ex. 01-test1.php or 46-test46.php).
+
+This naming convention enforces an ordering in which the scripts will
+be run. This allows, e.g., the column test to be run *after* the table
+test and therefore allows the column test to use the columns of the
+previously created tables.
 
 
-2. how test-builder are working
+2. How the ppa Selenium test-builder system works
 
-These scripts are included and executed in TestSuite.php in
+The ppa test scripts are included and executed by TestSuite.php in
 alphanumeric order. See comments in file
-./tests/selenium/src/skeleton.php-dist which is a template of
-test-builder.  When executed from TestSuite.php, test-builders should:
+./tests/selenium/src/skeleton.php-dist which is a template for a ppa
+diagnostic test script.  Each ppa test script should:
 
-- create a "TestBuilder" intance which gonna helps write HTML tests quickly. 
+- Create a "TestBuilder" instance which helps write HTML tests quickly. 
 	The constructor takes the following arguments:
 	- HTML title of the page
 	- Test description (appears on top of the tests table)
 
-	$t = new TestBuilder('Index tests',
-		'Create/Drop an unique Index'
-	);
+	Example:
+		$t = new TestBuilder('Index tests',
+			 	 			 'Create/Drop an unique Index');
 
-- once the TestBuilder instance is created, you can use it to write our tests.
-	- You should use the login($username, $pass) and logout() methods
+- Once the TestBuilder instance is created, you can use it to write
+  Selenium tests.
+
+	- Each test should begin by logging in and finish by logging out.
+	  You should use the login($username, $pass) and logout() methods
 	  to create appropriate steps to login/logout to the current
 	  server.
-	- Each selenium actions are mapped (or should be) as
-	  methods. As instance, if you want to use the clickAndWait
-	  action, you should call the clickAndWait($locator)
-	  method. For the assertText, assertText($selector, $value),
-	  etc...
+
+	- Each selenium command is mapped (or should be) to a TestBuilder
+	  method. For instance, if you want to use the clickAndWait
+	  action, you should call the clickAndWait($locator) method. For
+	  the assertText, assertText($selector, $value), etc...
+
+	  To continue the example above:
+	  	 $t->clickAndWait($locator);
+	  	 $t->assertText($selector, $value);
+
 	- Use the addComment method to show comments anywhere in the tests
-	  page. Usefull to explain whatthe next tests are going to do.
+	  page.  This is useful when explaining what the next steps in the
+	  test are going to do.
+
+
+3. Extending the ppa test building system.
+
+The testBuilder.class.php program is what maps TestBuilder instance
+methods onto Selenium commands (actions, accessors, and assertions).
+The ppa test system does not make every Selenium command available as
+a method.  To extend the ppa test system to add more selenium commands
+the testBuilder.class.php program must be modified.
