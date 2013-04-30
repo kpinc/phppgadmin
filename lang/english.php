@@ -22,6 +22,7 @@
 	$lang['strviewfaq'] = 'View online FAQ';
 	$lang['strviewfaq_url'] = 'http://phppgadmin.sourceforge.net/doku.php?id=faq';
 	$lang['strseleniumtestsenabled'] = 'phpPgAdmin Selenium self-diagnostic tests';
+	$lang['strseleniumtestsdisabled'] = 'The phpPgAdmin Selenium self-diagnostic tests are not configured';
 	
 	// Basic strings
 	$lang['strlogin'] = 'Login';
