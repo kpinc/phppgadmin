@@ -19,6 +19,11 @@ using the "Selenium TestRunner" buttons in the top-right frame.
 
 Enjoy the tests.
 
+Should the tests fail or be halted before completion there is a menu
+item on the PPA introductory page which will re-initialize the PPA
+self-test state of the tested PG servers, removing leftover remnants
+from prior test runs which might interfere with subsequent test runs.
+
 
 HowTo write new tests
 ~~~~~~~~~~~~~~~~~~~~~
