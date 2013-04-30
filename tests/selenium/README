@@ -7,10 +7,13 @@ sample one in ./tests/selenium/config.inc.php-dist)
 2. Make sure "$conf['show_system']" is set to "true" in your
 "./conf/config.inc.php"
 
-3. Open your browser and go to http://$webUrl/ Where $webUrl is the
+3. Make sure "$conf['extra_login_security']" is set to "false" in your
+"./conf/config.inc.php" file.
+
+4. Open your browser and go to http://$webUrl/ Where $webUrl is the
 value set in your ./tests/selenium/config.inc.php
 
-4. Click on "Selenium tests" on the PPA intro page & run the tests
+5. Click on "Selenium tests" on the PPA intro page & run the tests
 using the "Selenium TestRunner" buttons in the top-right frame.
 
 Enjoy the tests.
