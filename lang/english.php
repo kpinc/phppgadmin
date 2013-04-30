@@ -21,6 +21,7 @@
 	$lang['strreportbug'] = 'Report a Bug';
 	$lang['strviewfaq'] = 'View online FAQ';
 	$lang['strviewfaq_url'] = 'http://phppgadmin.sourceforge.net/doku.php?id=faq';
+	$lang['strseleniumtestsenabled'] = 'phpPgAdmin Selenium self-diagnostic tests';
 	
 	// Basic strings
 	$lang['strlogin'] = 'Login';
