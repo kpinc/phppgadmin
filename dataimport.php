@@ -185,6 +185,16 @@
 				exit;
 			}
 
+			// Delete all rows if asked to replace existing content.
+			if (isset($_REQUEST['replace'])) {
+				$status = $data->emptyTable($_REQUEST['table']);
+				if ($status != 0) {
+					$data->rollbackTransaction();
+					$misc->printMsg($lang['strimporterror-delete']);
+					exit;
+				}
+			}
+
 			// If format is set to 'auto', then determine format automatically from file name
 			if ($_REQUEST['format'] == 'auto') {
 				$extension = substr(strrchr($_FILES['source']['name'], '.'), 1);
