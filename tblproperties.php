@@ -194,47 +194,12 @@
 	}
 
 	function doImport($msg = '') {
-		global $data, $misc;
-		global $lang;
+		global $misc;
 
 		$misc->printTrail('table');
 		$misc->printTabs('table','import');
 		$misc->printMsg($msg);
-
-		// Check that file uploads are enabled
-		if (ini_get('file_uploads')) {
-			// Don't show upload option if max size of uploads is zero
-			$max_size = $misc->inisizeToBytes(ini_get('upload_max_filesize'));
-			if (is_double($max_size) && $max_size > 0) {
-				echo "<form action=\"dataimport.php\" method=\"post\" enctype=\"multipart/form-data\">\n";
-				echo "<table>\n";
-				echo "\t<tr>\n\t\t<th class=\"data left required\">{$lang['strformat']}</th>\n";
-				echo "\t\t<td><select name=\"format\">\n";
-				echo "\t\t\t<option value=\"auto\">{$lang['strauto']}</option>\n";
-				echo "\t\t\t<option value=\"csv\">CSV</option>\n";
-				echo "\t\t\t<option value=\"tab\">{$lang['strtabbed']}</option>\n";
-				if (function_exists('xml_parser_create')) {
-					echo "\t\t\t<option value=\"xml\">XML</option>\n";
-				}
-				echo "\t\t</select></td>\n\t</tr>\n";
-				echo "\t<tr>\n\t\t<th class=\"data left required\">{$lang['strallowednulls']}</th>\n";
-				echo "\t\t<td><label><input type=\"checkbox\" name=\"allowednulls[0]\" value=\"\\N\" checked=\"checked\" />{$lang['strbackslashn']}</label><br />\n";
-				echo "\t\t<label><input type=\"checkbox\" name=\"allowednulls[1]\" value=\"NULL\" />NULL</label><br />\n";
-				echo "\t\t<label><input type=\"checkbox\" name=\"allowednulls[2]\" value=\"\" />{$lang['stremptystring'] }</label></td>\n\t</tr>\n";
-				echo "\t<tr>\n\t\t<th class=\"data left required\">{$lang['strfile']}</th>\n";
-				echo "\t\t<td><input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"{$max_size}\" />";
-				echo "<input type=\"file\" name=\"source\" /></td>\n\t</tr>\n";
-				echo "\t<tr>\n\t\t<th class=\"data left required\">{$lang['strexistingcontent']}</th>\n";
-				echo "\t\t<td><label><input type=\"checkbox\" name=\"replace\" value=\"replace\" />{$lang['strreplacetablecontent']}</label></td>\n\t<tr>\n";
-				echo "</table>\n";
-				echo "<p><input type=\"hidden\" name=\"action\" value=\"import\" />\n";
-				echo $misc->form;
-				echo "<input type=\"hidden\" name=\"table\" value=\"", htmlspecialchars($_REQUEST['table']), "\" />\n";
-				echo "<input type=\"submit\" value=\"{$lang['strimport']}\" /></p>\n";
-				echo "</form>\n";
-			}
-		}
-		else echo "<p>{$lang['strnouploads']}</p>\n";
+		$misc->printImport();
 	}
 
 	/**
