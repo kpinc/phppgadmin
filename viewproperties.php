@@ -125,6 +125,18 @@
 	}
 
 	/**
+	 * Import data into a view
+	 */
+	function doImport($msg = '') {
+		global $misc;
+
+		$misc->printTrail('view');
+		$misc->printTabs('view','import');
+		$misc->printMsg($msg);
+		$misc->printImport('view');
+	}
+
+	/**
 	 * Show definition for a view
 	 */
 	function doDefinition($msg = '') {
@@ -529,6 +541,9 @@
 			break;
 		case 'edit':
 			doEdit();
+			break;
+		case 'import':
+			doImport();
 			break;
 		case 'export':
 			doExport();
