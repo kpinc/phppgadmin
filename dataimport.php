@@ -1,7 +1,7 @@
 <?php
 
 	/**
-	 * Does an import to a particular table from a text file
+	 * Does an import to a particular table or view from a text file
 	 *
 	 * $Id: dataimport.php,v 1.11 2007/01/22 16:33:01 soranzo Exp $
 	 */
@@ -100,7 +100,7 @@
 				$state = 'READ_RECORDS';
 				break;
 			case 'ROW':
-				// Build value map in order to insert row into table
+				// Build value map in order to insert row
 				$fields = array();
 				$vars = array();
 				$nulls = array();
@@ -119,7 +119,7 @@
 					$types[$i] = 'text';
 					$i++;
 				}
-				$status = $data->insertRow($_REQUEST['table'], $fields, $vars, $nulls, $format, $types);
+				$status = $data->insertRow($_REQUEST[$_REQUEST['subject']], $fields, $vars, $nulls, $format, $types);
 				if ($status != 0) {
 					$data->rollbackTransaction();
 					$misc->printMsg($lang['strimporterror']);
@@ -169,8 +169,8 @@
 	}
 
 	$misc->printHeader($lang['strimport']);
-	$misc->printTrail('table');
-	$misc->printTabs('table','import');
+	$misc->printTrail($_REQUEST['subject']);
+	$misc->printTabs($_REQUEST['subject'],'import');
 
 	// Check that file is specified and is an uploaded file
 	if (isset($_FILES['source']) && is_uploaded_file($_FILES['source']['tmp_name']) && is_readable($_FILES['source']['tmp_name'])) {
@@ -187,7 +187,7 @@
 
 			// Delete all rows if asked to replace existing content.
 			if (isset($_REQUEST['replace'])) {
-				$status = $data->emptyTable($_REQUEST['table']);
+				$status = $data->emptyTable($_REQUEST[$_REQUEST['subject']]);
 				if ($status != 0) {
 					$data->rollbackTransaction();
 					$misc->printMsg($lang['strimporterror-delete']);
@@ -256,7 +256,7 @@
 							$i++;
 						}
 
-						$status = $data->insertRow($_REQUEST['table'], $t_fields, $vars, $nulls, $format, $types);
+						$status = $data->insertRow($_REQUEST[$_REQUEST['subject']], $t_fields, $vars, $nulls, $format, $types);
 						if ($status != 0) {
 							$data->rollbackTransaction();
 							$misc->printMsg(sprintf($lang['strimporterrorline'], $row));

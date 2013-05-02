@@ -199,7 +199,7 @@
 		$misc->printTrail('table');
 		$misc->printTabs('table','import');
 		$misc->printMsg($msg);
-		$misc->printImport();
+		$misc->printImport('table');
 	}
 
 	/**

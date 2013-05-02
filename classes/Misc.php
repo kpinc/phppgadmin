@@ -2158,8 +2158,9 @@
 
 		/**
 		 * Function to print an import page
+		 * @param $subject Either 'table' or 'view'
 		 */
-		function printImport() {
+		function printImport($subject) {
 			global $misc;
 			global $lang;
 
@@ -2191,7 +2192,8 @@
 				echo "</table>\n";
 				echo "<p><input type=\"hidden\" name=\"action\" value=\"import\" />\n";
 				echo $misc->form;
-				echo "<input type=\"hidden\" name=\"table\" value=\"", htmlspecialchars($_REQUEST['table']), "\" />\n";
+				echo "<input type=\"hidden\" name=\"{$subject}\" value=\"", htmlspecialchars($_REQUEST[$subject]), "\" />\n";
+				echo "<input type=\"hidden\" name=\"subject\" value=\"{$subject}\" />\n";
 				echo "<input type=\"submit\" value=\"{$lang['strimport']}\" /></p>\n";
 				echo "</form>\n";
 			}
