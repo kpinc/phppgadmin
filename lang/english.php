@@ -150,6 +150,7 @@
 	$lang['strgotoppage'] = 'back to top';
 	$lang['strtheme'] = 'Theme';
 	$lang['strcluster'] = 'Cluster';
+	$lang['strexistingcontent'] = 'Existing content';
 	
 	// Admin
 	$lang['stradminondatabase'] = 'The following administrative tasks apply on the whole %s database.';
@@ -189,6 +190,7 @@
 	$lang['strrownotunique'] = 'No unique identifier for this row.';
 	$lang['strnouploads'] = 'File uploads are disabled.';
 	$lang['strimporterror'] = 'Import error.';
+	$lang['strimporterror-delete'] = 'Import error: Failed to delete existing table content.';
 	$lang['strimporterror-fileformat'] = 'Import error: Failed to automatically determine the file format.';
 	$lang['strimporterrorline'] = 'Import error on line %s.';
 	$lang['strimporterrorline-badcolumnnum'] = 'Import error on line %s: Line does not possess the correct number of columns.';
@@ -271,6 +273,7 @@
 	$lang['strspecifytabletoreindex'] = 'You must specify at least one table to reindex.';
 	$lang['strspecifytabletocluster'] = 'You must specify at least one table to cluster.';
 	$lang['strnofieldsforinsert'] = 'You cannot insert a row into a table with no column.';
+	$lang['strreplacetablecontent'] = 'Replace table content';
 
 	// Columns
 	$lang['strcolprop'] = 'Column properties';
