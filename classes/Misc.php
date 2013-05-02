@@ -670,8 +670,23 @@
 			global $misc, $conf, $data, $lang;
 
 			if (is_string($tabs)) {
+			   	switch ($tabs) {
+					case 'view':
+						$for_import = true;
+						break;
+					default:
+						$for_import = false;
+				};
+
 				$_SESSION['webdbLastTab'][$tabs] = $activetab;
 				$tabs = $this->getNavTabs($tabs);
+
+				if ($for_import) {
+					$ops = $data->getSupportedOps($_REQUEST['schema'],
+												  $_REQUEST['view']);
+					if ($ops['insert'])
+						$tabs['import']['hide'] = false;
+				}
 			}
 
 			echo "<table class=\"tabs\"><tr>\n";
@@ -1107,6 +1122,13 @@
 							'urlvars' => array('subject' => 'view', 'view' => field('view')),
 							'help'  => 'pg.privilege',
 							'icon'  => 'Privileges',
+						),
+						'import' => array (
+							'title' => $lang['strimport'],
+							'url'   => 'viewproperties.php',
+							'urlvars' => array('subject' => 'view', 'view' => field('view'), 'action' => 'import'),
+							'icon'  => 'Import',
+							'hide'	=> true,
 						),
 						'export' => array (
 							'title' => $lang['strexport'],

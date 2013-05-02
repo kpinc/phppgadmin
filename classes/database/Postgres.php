@@ -3034,6 +3034,46 @@ class Postgres extends ADODB_base {
 	}
 
 	/**
+	 * Return array of operations supported on the view (relation).
+	 * @param string $schema the namespace of the view
+	 * @param string $rel the name of the view
+	 * @return array Keyed by a string, the operation: 'insert'
+	 */
+	function getSupportedOps($schema, $rel) {
+		$this->clean($schema);
+		$this->clean($rel);
+
+		// Make a single call to the db to get everything.
+		// (We always get strings back from the db,
+		// so may as well be explicit.)
+		$sql = "SELECT CASE has_table_privilege('{$schema}.{$rel}', 'INSERT')
+		                    AND (views.is_insertable_into = 'YES'
+							     OR views.is_trigger_insertable_into = 'YES')
+						 WHEN TRUE THEN 'Y'
+						 ELSE 'N' END
+					   AS insert
+				  FROM information_schema.views
+				  WHERE views.table_schema = '{$schema}'
+				  		AND views.table_name = '{$rel}'";
+
+		$rs = $this->selectSet($sql);
+
+		if ($rs) {
+			// Map returned sql values onto PHP true and false. 
+			// It would be nice to do this with array_map() and an anonymous
+			// function but that requires php >= 5.3 (really >= 5.4 for
+			// use with $this.)
+			$a = array();
+			foreach ($rs->fields as $k => $v) {
+				$a[$k] = ($v === 'Y');
+			}
+		} else
+			$a = false;
+
+		return $a;
+	}
+
+	/**
 	 * Returns a list of all views in the database
 	 * @return All views
 	 */
