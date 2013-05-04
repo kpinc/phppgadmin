@@ -186,5 +186,13 @@
 			$this->test('assertErrorOnNext', $msg);
 		}
 		
+		/**
+		 * Add a selenium assertAlert test to the file
+		 * @param $msg the selenium alert message expected
+		 */
+		public function assertAlert($msg) {
+			$this->test('assertAlert', $msg);
+		}
+		
 	}
 ?>
