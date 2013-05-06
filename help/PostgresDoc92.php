@@ -3,7 +3,9 @@
 /**
  * Help links for PostgreSQL 9.2 documentation
  *
- * $Id: PostgresDoc84.php,v 1.3 2008/11/18 21:35:48 ioguix Exp $
+ * Test this with an url like:
+ * http://localhost/phpPgAdmin-dev/help.php?action=browse&server=localhost:5432:allow
+ * Click on all the links to be sure they work.
  */
 
 $this->help_base = sprintf($GLOBALS['conf']['help_base'], '9.2');
