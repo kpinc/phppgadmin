@@ -6,6 +6,7 @@
  * Test this with an url like:
  * http://localhost/phpPgAdmin-dev/help.php?action=browse&server=localhost:5432:allow
  * Click on all the links to be sure they work.
+ * Pay particular attention to the anchors.
  */
 
 $this->help_base = sprintf($GLOBALS['conf']['help_base'], '9.2');
@@ -24,24 +25,24 @@ $this->help_page = array(
 	'pg.cast.create'		=> 'sql-createcast.html',
 	'pg.cast.drop'			=> 'sql-dropcast.html',
 
-	'pg.column.add'			=> array('ddl-alter.html#AEN2217', 'sql-altertable.html'),
+	'pg.column.add'			=> array('ddl-alter.html#AEN2706', 'sql-altertable.html'),
 	'pg.column.alter'		=> array('ddl-alter.html','sql-altertable.html'),
-	'pg.column.drop'		=> array('ddl-alter.html#AEN2226', 'sql-altertable.html'),
+	'pg.column.drop'		=> array('ddl-alter.html#AEN2722', 'sql-altertable.html'),
 
 	'pg.constraint'			=> 'ddl-constraints.html',
-	'pg.constraint.add'		=> 'ddl-alter.html#AEN2217',
-	'pg.constraint.check'		=> 'ddl-constraints.html#AEN1978',
-	'pg.constraint.drop'		=> 'ddl-alter.html#AEN2226',
+	'pg.constraint.add'		=> 'ddl-alter.html#AEN2733',
+	'pg.constraint.check'		=> 'ddl-constraints.html#AEN2410',
+	'pg.constraint.drop'		=> 'ddl-alter.html#AEN2742',
 	'pg.constraint.foreign_key'	=> 'ddl-constraints.html#DDL-CONSTRAINTS-FK',
-	'pg.constraint.primary_key'	=> 'ddl-constraints.html#AEN2055',
-	'pg.constraint.unique_key'	=> 'ddl-constraints.html#AEN2033',
+	'pg.constraint.primary_key'	=> 'ddl-constraints.html#AEN2493',
+	'pg.constraint.unique_key'	=> 'ddl-constraints.html#AEN2470',
 
 	'pg.conversion'			=> 'multibyte.html',
 	'pg.conversion.alter'		=> 'sql-alterconversion.html',
 	'pg.conversion.create'		=> 'sql-createconversion.html',
 	'pg.conversion.drop'		=> 'sql-dropconversion.html',
 
-	'pg.domain'			=> 'extend-type-system.html#AEN27940',
+	'pg.domain'			=> 'extend-type-system.html#AEN51685',
 	'pg.domain.alter'		=> 'sql-alterdomain.html',
 	'pg.domain.create'		=> 'sql-createdomain.html',
 	'pg.domain.drop'		=> 'sql-dropdomain.html',
@@ -61,7 +62,7 @@ $this->help_page = array(
 
 	'pg.ftsparser'			=> 'textsearch-parsers.html',
 
-	'pg.function'			=> array('xfunc.html', 'functions.html', 'sql-expressions.html#AEN1652'),
+	'pg.function'			=> array('xfunc.html', 'functions.html', 'sql-expressions.html#SQL-EXPRESSIONS-FUNCTION-CALLS'),
 	'pg.function.alter'		=> 'sql-alterfunction.html',
 	'pg.function.create'		=> 'sql-createfunction.html',
 	'pg.function.create.c'		=> array('xfunc-c.html','sql-createfunction.html'),
@@ -69,8 +70,8 @@ $this->help_page = array(
 	'pg.function.create.pl'		=> array('xfunc-sql.html','xfunc-pl.html','sql-createfunction.html'),
 	'pg.function.drop'		=> 'sql-dropfunction.html',
 
-	'pg.group'			=> 'groups.html',
-	'pg.group.alter'		=> array('sql-altergroup.html','groups.html'),
+	'pg.group'			=> 'user-manag.html',
+	'pg.group.alter'		=> array('sql-altergroup.html','user-manag.html'),
 	'pg.group.create'		=> 'sql-creategroup.html',
 	'pg.group.drop'			=> 'sql-dropgroup.html',
 
@@ -90,7 +91,7 @@ $this->help_page = array(
 	'pg.opclass.create'		=> 'sql-createopclass.html',
 	'pg.opclass.drop'		=> 'sql-dropopclass.html',
 
-	'pg.operator'			=> array('xoper.html', 'functions.html', 'sql-expressions.html#AEN1623'),
+	'pg.operator'			=> array('xoper.html', 'functions.html', 'sql-expressions.html#SQL-EXPRESSIONS-OPERATOR-CALLS'),
 	'pg.operator.alter'		=> 'sql-alteroperator.html',
 	'pg.operator.create'		=> 'sql-createoperator.html',
 	'pg.operator.drop'		=> 'sql-dropoperator.html',
@@ -101,16 +102,16 @@ $this->help_page = array(
 	'pg.pl.plpython'		=> 'plpython.html',
 	'pg.pl.pltcl'			=> 'pltcl.html',
 
-	'pg.privilege'			=> array('privileges.html','ddl-priv.html'),
+	'pg.privilege'			=> 'ddl-priv.html',
 	'pg.privilege.grant'		=> 'sql-grant.html',
 	'pg.privilege.revoke'		=> 'sql-revoke.html',
 
 	'pg.process'			=> 'monitoring.html',
 
 	'pg.role'				=> 'user-manag.html',
-	'pg.role.create'		=> array('sql-createrole.html','user-manag.html#DATABASE-ROLES'),
+	'pg.role.create'		=> array('sql-createrole.html','database-roles.html'),
 	'pg.role.alter'			=> array('sql-alterrole.html','role-attributes.html'),
-	'pg.role.drop'			=> array('sql-droprole.html','user-manag.html#DATABASE-ROLES'),
+	'pg.role.drop'			=> array('sql-droprole.html','database-roles.html'),
 
 	'pg.rule'			=> 'rules.html',
 	'pg.rule.create'		=> 'sql-createrule.html',
@@ -132,7 +133,7 @@ $this->help_page = array(
 	'pg.sql.select'			=> 'sql-select.html',
 	'pg.sql.update'			=> 'sql-update.html',
 
-	'pg.table'			=> 'ddl.html#DDL-BASICS',
+	'pg.table'			=> 'ddl-basics.html',
 	'pg.table.alter'		=> 'sql-altertable.html',
 	'pg.table.create'		=> 'sql-createtable.html',
 	'pg.table.drop'			=> 'sql-droptable.html',
@@ -153,9 +154,9 @@ $this->help_page = array(
 	'pg.type.create'		=> 'sql-createtype.html',
 	'pg.type.drop'			=> 'sql-droptype.html',
 
-	'pg.user.alter'			=> array('sql-alteruser.html','user-attributes.html'),
-	'pg.user.create'		=> array('sql-createuser.html','user-manag.html#DATABASE-USERS'),
-	'pg.user.drop'			=> array('sql-dropuser.html','user-manag.html#DATABASE-USERS'),
+	'pg.user.alter'			=> array('sql-alteruser.html','role-attributes.html'),
+	'pg.user.create'		=> array('sql-createuser.html','database-roles.html'),
+	'pg.user.drop'			=> array('sql-dropuser.html','database-roles.html'),
 
 	'pg.variable'			=> 'runtime-config.html',
 
