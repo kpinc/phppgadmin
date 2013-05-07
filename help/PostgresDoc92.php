@@ -7,6 +7,8 @@
  * http://localhost/phpPgAdmin-dev/help.php?action=browse&server=localhost:5432:allow
  * Click on all the links to be sure they work.
  * Pay particular attention to the anchors.
+ *
+ * Internal page anchors in pg submitted patch follow as a comment.
  */
 
 $this->help_base = sprintf($GLOBALS['conf']['help_base'], '9.2');
@@ -25,24 +27,24 @@ $this->help_page = array(
 	'pg.cast.create'		=> 'sql-createcast.html',
 	'pg.cast.drop'			=> 'sql-dropcast.html',
 
-	'pg.column.add'			=> array('ddl-alter.html#AEN2706', 'sql-altertable.html'),
+	'pg.column.add'			=> array('ddl-alter.html#AEN2706', 'sql-altertable.html'), // #DDL-ALTER-ADDING-A-COLUMN
 	'pg.column.alter'		=> array('ddl-alter.html','sql-altertable.html'),
-	'pg.column.drop'		=> array('ddl-alter.html#AEN2722', 'sql-altertable.html'),
+	'pg.column.drop'		=> array('ddl-alter.html#AEN2722', 'sql-altertable.html'), // #DDL-ALTER-REMOVING-A-COLUMN
 
 	'pg.constraint'			=> 'ddl-constraints.html',
-	'pg.constraint.add'		=> 'ddl-alter.html#AEN2733',
-	'pg.constraint.check'		=> 'ddl-constraints.html#AEN2410',
-	'pg.constraint.drop'		=> 'ddl-alter.html#AEN2742',
+	'pg.constraint.add'		=> 'ddl-alter.html#AEN2733', // #DDL-ALTER-ADDING-A-CONSTRAINT
+	'pg.constraint.check'		=> 'ddl-constraints.html#AEN2410', // #DDL-CONSTRAINTS-CHECK-CONSTRAINTS
+	'pg.constraint.drop'		=> 'ddl-alter.html#AEN2742', // #DDL-ALTER-REMOVING-A-CONSTRAINT
 	'pg.constraint.foreign_key'	=> 'ddl-constraints.html#DDL-CONSTRAINTS-FK',
-	'pg.constraint.primary_key'	=> 'ddl-constraints.html#AEN2493',
-	'pg.constraint.unique_key'	=> 'ddl-constraints.html#AEN2470',
+	'pg.constraint.primary_key'	=> 'ddl-constraints.html#AEN2493', // #DDL-CONSTRAINTS-PRIMARY-KEYS
+	'pg.constraint.unique_key'	=> 'ddl-constraints.html#AEN2470', // #DDL-CONSTRAINTS-UNIQUE-CONSTRAINTS
 
 	'pg.conversion'			=> 'multibyte.html',
 	'pg.conversion.alter'		=> 'sql-alterconversion.html',
 	'pg.conversion.create'		=> 'sql-createconversion.html',
 	'pg.conversion.drop'		=> 'sql-dropconversion.html',
 
-	'pg.domain'			=> 'extend-type-system.html#AEN51685',
+	'pg.domain'			=> 'extend-type-system.html#AEN51685', // #EXTEND-TYPE-SYSTEM-DOMAINS
 	'pg.domain.alter'		=> 'sql-alterdomain.html',
 	'pg.domain.create'		=> 'sql-createdomain.html',
 	'pg.domain.drop'		=> 'sql-dropdomain.html',
