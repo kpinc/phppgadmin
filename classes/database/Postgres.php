@@ -3034,19 +3034,15 @@ class Postgres extends ADODB_base {
 	}
 
 	/**
-	 * Return array of operations supported on the view (relation).
+	 * Return SQL used to get supported operations on a view.
 	 * @param string $schema the namespace of the view
 	 * @param string $rel the name of the view
-	 * @return array Keyed by a string, the operation: 'insert'
+	 * @return string SQL returning one row with column: insert
 	 */
-	function getSupportedOps($schema, $rel) {
+	protected function getSOViewSql($schema, $rel) {
 		$this->clean($schema);
 		$this->clean($rel);
-
-		// Make a single call to the db to get everything.
-		// (We always get strings back from the db,
-		// so may as well be explicit.)
-		$sql = "SELECT CASE has_table_privilege('{$schema}.{$rel}', 'INSERT')
+		return "SELECT CASE has_table_privilege('{$schema}.{$rel}', 'INSERT')
 		                    AND (views.is_insertable_into = 'YES'
 							     OR views.is_trigger_insertable_into = 'YES')
 						 WHEN TRUE THEN 'Y'
@@ -3055,8 +3051,20 @@ class Postgres extends ADODB_base {
 				  FROM information_schema.views
 				  WHERE views.table_schema = '{$schema}'
 				  		AND views.table_name = '{$rel}'";
+	}
 
-		$rs = $this->selectSet($sql);
+	/**
+	 * Return array of operations supported on the view (relation).
+	 * @param string $schema the namespace of the view
+	 * @param string $rel the name of the view
+	 * @return array Keyed by a string, the operation: 'insert'
+	 */
+	function getSupportedOps($schema, $rel) {
+
+		// Make a single call to the db to get everything.
+		// (We always get strings back from the db,
+		// so may as well be explicit.)
+		$rs = $this->selectSet($this->getSOViewSql($schema, $rel));
 
 		if ($rs) {
 			// Map returned sql values onto PHP true and false. 
