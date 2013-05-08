@@ -291,6 +291,23 @@ class Postgres81 extends Postgres82 {
 	function hasCreateTableLikeWithConstraints() {return false;}
 	function hasSharedComments() {return false;}
 	function hasConcurrentIndexBuild() {return false;}
+
+	// Database functions
+
+	/**
+	 * Return SQL used to get supported operations on a view.
+	 * @param string $schema the namespace of the view
+	 * @param string $rel the name of the view
+	 * @return string SQL returning one row with column: insert
+	 */
+	protected function getSOViewSql($schema, $rel) {
+		$this->clean($schema);
+		$this->clean($rel);
+		return "SELECT FALSE AS insert
+				  FROM information_schema.views
+				  WHERE views.table_schema = '{$schema}'
+				  		AND views.table_name = '{$rel}'";
+	}
 }
 
 ?>
