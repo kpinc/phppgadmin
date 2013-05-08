@@ -673,6 +673,11 @@
 			   	switch ($tabs) {
 					case 'view':
 						$for_import = true;
+						$reltype = $tabs;
+						break;
+					case 'table':
+						$for_import = true;
+						$reltype = $tabs;
 						break;
 					default:
 						$for_import = false;
@@ -683,7 +688,8 @@
 
 				if ($for_import) {
 					$ops = $data->getSupportedOps($_REQUEST['schema'],
-												  $_REQUEST['view']);
+												  $_REQUEST[$reltype],
+												  $reltype);
 					if ($ops['insert'])
 						$tabs['import']['hide'] = false;
 				}
@@ -1081,7 +1087,7 @@
 							'url'   => 'tblproperties.php',
 							'urlvars' => array('subject' => 'table', 'table' => field('table'), 'action' => 'import'),
 							'icon'  => 'Import',
-							'hide'	=> false,
+							'hide'	=> true,
 						),
 						'export' => array (
 							'title' => $lang['strexport'],
