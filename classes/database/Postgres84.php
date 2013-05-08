@@ -226,6 +226,27 @@ class Postgres84 extends Postgres90 {
 
 	function hasByteaHexDefault() { return false; } 
 
+	// Database functions
+
+	/**
+	 * Return SQL used to get supported operations on a view.
+	 * @param string $schema the namespace of the view
+	 * @param string $rel the name of the view
+	 * @return string SQL returning one row with column: insert
+	 */
+	protected function getSOViewSql($schema, $rel) {
+		$this->clean($schema);
+		$this->clean($rel);
+		return "SELECT CASE has_table_privilege('{$schema}.{$rel}', 'INSERT')
+		                    AND views.is_insertable_into = 'YES'
+						 WHEN TRUE THEN 'Y'
+						 ELSE 'N' END
+					   AS insert
+				  FROM information_schema.views
+				  WHERE views.table_schema = '{$schema}'
+				  		AND views.table_name = '{$rel}'";
+	}
+
 }
 
 ?>
