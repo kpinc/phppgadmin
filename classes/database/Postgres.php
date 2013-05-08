@@ -3054,17 +3054,29 @@ class Postgres extends ADODB_base {
 	}
 
 	/**
-	 * Return array of operations supported on the view (relation).
-	 * @param string $schema the namespace of the view
-	 * @param string $rel the name of the view
+	 * Return array of operations supported on the relation.
+	 * @param string $schema the namespace of the relation
+	 * @param string $rel the name of the relation
+	 * @param string $reltype the kind of relation: 'view', 'table'
 	 * @return array Keyed by a string, the operation: 'insert'
 	 */
-	function getSupportedOps($schema, $rel) {
+	function getSupportedOps($schema, $rel, $reltype) {
+		switch ($reltype) {
+			case 'view':
+				$sql = $this->getSOViewSql($schema, $rel);
+				break;
+			case 'table':
+				$this->clean($schema);
+				$this->clean($rel);
 
-		// Make a single call to the db to get everything.
-		// (We always get strings back from the db,
-		// so may as well be explicit.)
-		$rs = $this->selectSet($this->getSOViewSql($schema, $rel));
+				$sql = "SELECT CASE has_table_privilege('{$schema}.{$rel}',
+														'INSERT') = 'YES'
+									WHEN TRUE THEN 'Y'
+									ELSE 'N' END
+								  AS insert";
+				break;
+		}
+		$rs = $this->selectSet($sql);
 
 		if ($rs) {
 			// Map returned sql values onto PHP true and false. 
