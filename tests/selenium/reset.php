@@ -20,6 +20,9 @@
 	include_once('./themes/themes.php');
 	require('./tests/selenium/config.test.php');
 
+    // The alter db test uses this and makes a new db.
+	define('ALTERSUFFIX', 'toalter');
+
 	function reset_selftest() {
 		// ppa globals
 		global $misc;
@@ -35,6 +38,8 @@
 		$misc->printHeader();
 		$misc->printBody();
 
+		$altereddb = $testdb . ALTERSUFFIX;
+
 		// Start a table.
 		?>
 		<h1>Reset PPA Self-Test PG Server State</h1>
@@ -43,6 +48,7 @@
 			<tr>
 				<th>Server</th>
 				<th>Dropped database <?php echo $testdb; ?></th>
+				<th>Dropped database <?php echo $altereddb; ?></th>
 				<th>Dropped role <?php echo $admin_user; ?></th>
 				<th>Dropped role <?php echo $user; ?></th>
 			</tr>
@@ -74,6 +80,14 @@
 
 			echo '<td class="tab">';
 			if ($data->dropDatabase($testdb) == 0) {
+		   	   	echo 'Yes';
+			} else {
+		   	  	echo 'No';
+			}		   
+			echo '</td>';
+
+			echo '<td class="tab">';
+			if ($data->dropDatabase($altereddb) == 0) {
 		   	   	echo 'Yes';
 			} else {
 		   	  	echo 'No';
