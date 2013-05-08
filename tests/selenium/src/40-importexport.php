@@ -44,6 +44,9 @@
 		$t->addComment('2. Does the "simple" view have an "import" tab?');
 		$t->clickAndWait("link={$lang['strviews']}");
 		$t->clickAndWait("link=student_view");
+		$t->clickAndWait("link=student_view");
+		if ($t->data->major_version < 9.3)
+		   	$t->assertErrorOnNext("Element link={$lang['strimport']} not found");
 		$t->clickAndWait("link={$lang['strimport']}");
 		// More specificity could be had with something like:
 		// $t->assertText("//table[@class='tabs']//td//*[text()='{$lang['strimport']}']", "{$lang['strimport']}");
