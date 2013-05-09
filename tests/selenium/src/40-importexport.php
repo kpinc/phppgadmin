@@ -14,10 +14,10 @@
 		 * ppa does not allow views to have triggers.
 		 * 5/ Give the complex view a insert trigger (fixme)
 		 * Since step 5 is not complete can't do step 6
-		 * 6/ The complex view should now have an import tab (enableme)
-		 * PPA can't deny insert on a view so steps 7 and 8 can't be done.
-		 * 7/ Deny insert on the view to a user (todo)
-		 * 8/ The user should not see an import tab on the view (todo)
+		 * // 6/ The complex view should now have an import tab (enableme)
+		 * // PPA can't deny insert on a view so steps 7 and 8 can't be done.
+		 * // 7/ Deny insert on the view to a user (todo)
+		 * // 8/ The user should not see an import tab on the view (todo)
 		 * 7/ Drop the views
 		 **/
 		$t = new TestBuilder($test_title,
@@ -93,16 +93,16 @@ END;
 
 
 	/** 6 **/
-		/*    NEEDS TRIGGER ABOVE
+		/*****    NEEDS TRIGGER ABOVE
 		$t->addComment('6. The "complex" view should now have an "import" tab');
 		$t->clickAndWait('link=public');
 		$t->clickAndWait("link={$lang['strviews']}");
 		$t->clickAndWait("link=complex_view");
 		$t->clickAndWait("link={$lang['strimport']}");
-		*/
+		*****/
 
-	/** 6 **/
-		$t->addComment('6. Drop the views and functions');
+	/** 7 **/
+		$t->addComment('7. Drop the views and functions');
 		$t->clickAndWait('link=public');
 		$t->clickAndWait("link={$lang['strviews']}");
 		$t->clickAndWait("//tr/td/a[text()='student_view']/../../td/a[text()='{$lang['strdrop']}']");
