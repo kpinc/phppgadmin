@@ -194,5 +194,15 @@
 			$this->test('assertAlert', $msg);
 		}
 		
+		/**
+		 * Add a selenium echo command to the file
+		 * @param $msg the message to echo
+		 *
+		 * Sadly php won't let us call this echo, so it's 's_echo'.
+		 */
+		public function s_echo($msg) {
+			$this->test('echo', $msg);
+		}
+		
 	}
 ?>
