@@ -19,6 +19,15 @@
 		 * // 7/ Deny insert on the view to a user (todo)
 		 * // 8/ The user should not see an import tab on the view (todo)
 		 * 7/ Drop the views
+		 * 8/ Check that student table has an import tab.
+		 * 9/ Check that student table import tab is displayed only when
+		 *    user has import permissions.
+		 *    Note: The problem with the way this is written is that
+		 *    $user does not have insert permission on the student table,
+		 *    yet these test assume the user does have permission.
+		 *    This is not a problem, and it's left this way because it's				*    more robust to begin by revoking permission regardless,
+		 *    but it does leave $user with insert permission.
+		 *    So, this process may need revision.
 		 **/
 		$t = new TestBuilder($test_title,
 			'Test import and export features'
@@ -123,6 +132,63 @@ END;
 		$t->assertText("//p[text()='{$dropstr}']", $dropstr);
 		$t->clickAndWait("//input[@type='submit'][@name='drop']");
 		$t->assertText("//p[@class='message']", $lang['strfunctiondropped']);
+
+	/** 8 **/
+		$t->addComment('8. Check student table has an import tab');
+		$t->clickAndWait('link=public');
+		$t->clickAndWait("link={$lang['strtables']}");
+		$t->clickAndWait('link=student');
+		$t->clickAndWait("link={$lang['strimport']}");
+
+	/** 9 **/
+		$t->addComment('9. Check import tab displayed only given insert permission');
+		$t->s_echo("Revoke {$user}'s insert permission on student table");
+		$t->clickAndWait('link=public');
+		$t->clickAndWait("link={$lang['strtables']}");
+		$t->clickAndWait('link=student');
+		$t->clickAndWait("link={$lang['strprivileges']}");
+		$t->clickAndWait("link={$lang['strrevoke']}");
+		$t->select('name=username[]', "value={$user}");
+		$t->click("//input[@id='privilege[INSERT]']");
+		$t->clickAndWait("//input[@type='submit'][@value='{$lang['strrevoke']}']");
+		$t->assertText("//p[@class='message']", $lang['strgranted']);
+
+		$t->s_echo("Log out {$admin_user}");
+		$t->logout();
+
+		$t->s_echo("Log in {$user}");
+		$t->login($user, $user_pass);
+
+		$t->s_echo('Check import tab not displayed');
+		$t->clickAndWait("link={$lang['strdatabases']}");
+		$t->clickAndWait("link={$testdb}");
+		$t->clickAndWait("link={$lang['strschemas']}");
+		$t->clickAndWait('link=public');
+		$t->clickAndWait("link={$lang['strtables']}");
+		$t->clickAndWait('link=student');
+		$t->assertErrorOnNext("Element link={$lang['strimport']} not found");
+		$t->clickAndWait("link={$lang['strimport']}");
+
+		$t->s_echo("Log out {$user}");
+		$t->logout();
+
+		$t->s_echo("Log in {$admin_user}");
+		$t->login($admin_user, $admin_user_pass);
+
+		$t->s_echo("Restore {$user}'s insert permission on student table");
+		$t->clickAndWait("link={$lang['strdatabases']}");
+		$t->clickAndWait("link={$testdb}");
+		$t->clickAndWait("link={$lang['strschemas']}");
+		$t->clickAndWait('link=public');
+		$t->clickAndWait('link=public');
+		$t->clickAndWait("link={$lang['strtables']}");
+		$t->clickAndWait('link=student');
+		$t->clickAndWait("link={$lang['strprivileges']}");
+		$t->clickAndWait("link={$lang['strgrant']}");
+		$t->select('name=username[]', "value={$user}");
+		$t->click("//input[@id='privilege[INSERT]']");
+		$t->clickAndWait("//input[@type='submit'][@value='{$lang['strgrant']}']");
+		$t->assertText("//p[@class='message']", $lang['strgranted']);
 
 		$t->logout();
 		unset($t);
