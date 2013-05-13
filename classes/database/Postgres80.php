@@ -58,7 +58,7 @@ class Postgres80 extends Postgres81 {
 
 	function getHelpPages() {
 		include_once('./help/PostgresDoc80.php');
-		return $this->help_page;
+		return new PostgresDoc80();
 	}
 
 	// Database functions

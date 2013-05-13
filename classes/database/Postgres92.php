@@ -23,7 +23,7 @@ class Postgres92 extends Postgres {
 
 	function getHelpPages() {
 		include_once('./help/PostgresDoc92.php');
-		return $this->help_page;
+		return new PostgresDoc92();
 	}
 
 }
