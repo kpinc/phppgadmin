@@ -417,7 +417,7 @@ class Postgres extends ADODB_base {
 	}
 
 	function getHelpPages() {
-		include_once('./help/PostgresDoc93.php');
+		include_once('./help/PostgresDoc.php');
 		return $this->help_page;
 	}
 
