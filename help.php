@@ -44,8 +44,10 @@
 		
 		echo "<dl>\n";
 		
-		$pages = $data->getHelpPages();
-		foreach ($pages as $page => $dummy) {
+		// This instantiates a help class twice, but we don't
+		// care since doBrowse is not called in normal operation.
+		$docs = $data->getHelpPages();
+		foreach ($docs->help_page as $page => $dummy) {
 			echo "<dt>{$page}</dt>\n";
 			
 			$urls = $data->getHelp($page);

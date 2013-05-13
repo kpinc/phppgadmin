@@ -53,7 +53,7 @@ class Postgres83 extends Postgres84 {
 
 	function getHelpPages() {
 		include_once('./help/PostgresDoc83.php');
-		return $this->help_page;
+		return new PostgresDoc83();
 	}
 
 	// Databse functions

@@ -401,24 +401,24 @@ class Postgres extends ADODB_base {
 	 * Fetch a URL (or array of URLs) for a given help page.
 	 */
 	function getHelp($help) {
-		$this->getHelpPages();
+		$docs = $this->getHelpPages();
 
-		if (isset($this->help_page[$help])) {
-			if (is_array($this->help_page[$help])) {
+		if (isset($docs->help_page[$help])) {
+			if (is_array($docs->help_page[$help])) {
 				$urls = array();
-				foreach ($this->help_page[$help] as $link) {
-					$urls[] = $this->help_base . $link;
+				foreach ($docs->help_page[$help] as $link) {
+					$urls[] = $docs->help_base . $link;
 				}
 				return $urls;
 			} else
-				return $this->help_base . $this->help_page[$help];
+				return $docs->help_base . $docs->help_page[$help];
 		} else
 			return null;
 	}
 
 	function getHelpPages() {
 		include_once('./help/PostgresDoc.php');
-		return $this->help_page;
+		return new PostgresDoc();
 	}
 
 	// Database functions

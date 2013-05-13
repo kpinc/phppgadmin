@@ -37,7 +37,7 @@ class Postgres74 extends Postgres80 {
 
 	function getHelpPages() {
 		include_once('./help/PostgresDoc74.php');
-		return $this->help_page;
+		return new PostgresDoc74();
 	}
 
 	// Database functions

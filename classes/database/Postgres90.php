@@ -24,7 +24,7 @@ class Postgres90 extends Postgres91 {
 
 	function getHelpPages() {
 		include_once('./help/PostgresDoc90.php');
-		return $this->help_page;
+		return new PostgresDoc90();
 	}
 
 	// Capabilities
