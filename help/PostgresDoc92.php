@@ -9,7 +9,7 @@
  * Pay particular attention to the anchors.
  */
 
-include('./help/PostgresDoc93.php');
+include('./help/PostgresDoc.php');
 
 $this->help_base = sprintf($GLOBALS['conf']['help_base'], '9.2');
 
