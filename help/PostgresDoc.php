@@ -9,7 +9,7 @@
  * Pay particular attention to the anchors.
  */
 
-$this->help_base = sprintf($GLOBALS['conf']['help_base'], '9.2');
+$this->help_base = sprintf($GLOBALS['conf']['help_base'], '9.3');
 
 $this->help_page = array(
 
