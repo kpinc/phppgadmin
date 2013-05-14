@@ -2187,8 +2187,9 @@
 		/**
 		 * Function to print an import page
 		 * @param $subject Either 'table' or 'view'
+		 * @param $replace Boolean, true allows table content to be replaced.
 		 */
-		function printImport($subject) {
+		function printImport($subject, $replace) {
 			global $misc;
 			global $lang;
 
@@ -2215,8 +2216,10 @@
 				echo "\t<tr>\n\t\t<th class=\"data left required\">{$lang['strfile']}</th>\n";
 				echo "\t\t<td><input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"{$max_size}\" />";
 				echo "<input type=\"file\" name=\"source\" /></td>\n\t</tr>\n";
-				echo "\t<tr>\n\t\t<th class=\"data left required\">{$lang['strexistingcontent']}</th>\n";
-				echo "\t\t<td><label><input type=\"checkbox\" name=\"replace\" value=\"replace\" />{$lang['strreplacetablecontent']}</label></td>\n\t<tr>\n";
+				if ($replace) {
+					echo "\t<tr>\n\t\t<th class=\"data left required\">{$lang['strexistingcontent']}</th>\n";
+					echo "\t\t<td><label><input type=\"checkbox\" name=\"replace\" value=\"replace\" />{$lang['strreplacetablecontent']}</label></td>\n\t<tr>\n";
+				}
 				echo "</table>\n";
 				echo "<p><input type=\"hidden\" name=\"action\" value=\"import\" />\n";
 				echo $misc->form;

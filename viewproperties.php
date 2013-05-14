@@ -129,11 +129,15 @@
 	 */
 	function doImport($msg = '') {
 		global $misc;
+		global $data;
 
 		$misc->printTrail('view');
 		$misc->printTabs('view','import');
 		$misc->printMsg($msg);
-		$misc->printImport('view');
+		$ops = $data->getSupportedOps($_REQUEST['schema'],
+									  $_REQUEST['view'],
+									  'view');
+		$misc->printImport('view', $ops['delete']);
 	}
 
 	/**

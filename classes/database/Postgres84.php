@@ -241,7 +241,12 @@ class Postgres84 extends Postgres90 {
 		                    AND views.is_insertable_into = 'YES'
 						 WHEN TRUE THEN 'Y'
 						 ELSE 'N' END
-					   AS insert
+					   AS insert,
+					   CASE has_table_privilege('{$schema}.{$rel}', 'DELETE')
+		                    AND views.is_updatable = 'YES'
+						 WHEN TRUE THEN 'Y'
+						 ELSE 'N' END
+					   AS delete
 				  FROM information_schema.views
 				  WHERE views.table_schema = '{$schema}'
 				  		AND views.table_name = '{$rel}'";
