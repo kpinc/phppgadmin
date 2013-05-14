@@ -19,6 +19,8 @@
 		 * // PPA can't deny insert on a view so steps 7 and 8 can't be done.
 		 * // 8/ Deny insert on the view to a user (todo)
 		 * // 9/ The user should not see an import tab on the view (todo)
+		 * // 10/ Restore insert on the view/deny delete on the view (todo)
+		 * // 11/ The view should not allow replacement of content (todo)
 		 * 8/ Drop the views
 		 * 9/ Check that student table has an import tab.
 		 * 10/ Check that student table import tab is displayed only when
