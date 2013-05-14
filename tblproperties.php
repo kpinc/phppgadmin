@@ -195,11 +195,15 @@
 
 	function doImport($msg = '') {
 		global $misc;
+		global $data;
 
 		$misc->printTrail('table');
 		$misc->printTabs('table','import');
 		$misc->printMsg($msg);
-		$misc->printImport('table', true);
+		$ops = $data->getSupportedOps($_REQUEST['schema'],
+									  $_REQUEST['table'],
+									  'table');
+		$misc->printImport('table', $ops['delete']);
 	}
 
 	/**
