@@ -303,7 +303,8 @@ class Postgres81 extends Postgres82 {
 	protected function getSOViewSql($schema, $rel) {
 		$this->clean($schema);
 		$this->clean($rel);
-		return "SELECT FALSE AS insert
+		return "SELECT FALSE AS insert,
+			   		   FALSE AS delete
 				  FROM information_schema.views
 				  WHERE views.table_schema = '{$schema}'
 				  		AND views.table_name = '{$rel}'";

@@ -3047,7 +3047,13 @@ class Postgres extends ADODB_base {
 							     OR views.is_trigger_insertable_into = 'YES')
 						 WHEN TRUE THEN 'Y'
 						 ELSE 'N' END
-					   AS insert
+					   AS insert,
+					   CASE has_table_privilege('{$schema}.{$rel}', 'DELETE')
+		                    AND (views.is_updatable = 'YES'
+							     OR views.is_trigger_deletable = 'YES')
+						 WHEN TRUE THEN 'Y'
+						 ELSE 'N' END
+					   AS delete
 				  FROM information_schema.views
 				  WHERE views.table_schema = '{$schema}'
 				  		AND views.table_name = '{$rel}'";
@@ -3058,7 +3064,7 @@ class Postgres extends ADODB_base {
 	 * @param string $schema the namespace of the relation
 	 * @param string $rel the name of the relation
 	 * @param string $reltype the kind of relation: 'view', 'table'
-	 * @return array Keyed by a string, the operation: 'insert'
+	 * @return array Keyed by a string, the operation: 'insert', 'delete'
 	 */
 	function getSupportedOps($schema, $rel, $reltype) {
 		switch ($reltype) {
@@ -3073,7 +3079,12 @@ class Postgres extends ADODB_base {
 														'INSERT') = 'YES'
 									WHEN TRUE THEN 'Y'
 									ELSE 'N' END
-								  AS insert";
+								  AS insert,
+							   CASE has_table_privilege('{$schema}.{$rel}',
+														'DELETE') = 'YES'
+									WHEN TRUE THEN 'Y'
+									ELSE 'N' END
+								  AS delete";
 				break;
 		}
 		$rs = $this->selectSet($sql);
