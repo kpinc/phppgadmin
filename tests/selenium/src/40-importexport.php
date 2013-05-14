@@ -8,19 +8,20 @@
 		/**
 		 * 1/ Create a "simple" view
 		 * 2/ Check that the view has an import tab
-		 * 3/ Create a "complex" view
-		 * 4/ Check the complex view does not have an import tab
+		 * 3/ Import should allow simple view data to be replaced
+		 * 4/ Create a "complex" view
+		 * 5/ Check the complex view does not have an import tab
 		 * The problem here is that step 5 can't be done since
 		 * ppa does not allow views to have triggers.
-		 * 5/ Give the complex view a insert trigger (fixme)
+		 * 6/ Give the complex view a insert trigger (fixme)
 		 * Since step 5 is not complete can't do step 6
-		 * // 6/ The complex view should now have an import tab (enableme)
+		 * // 7/ The complex view should now have an import tab (enableme)
 		 * // PPA can't deny insert on a view so steps 7 and 8 can't be done.
-		 * // 7/ Deny insert on the view to a user (todo)
-		 * // 8/ The user should not see an import tab on the view (todo)
-		 * 7/ Drop the views
-		 * 8/ Check that student table has an import tab.
-		 * 9/ Check that student table import tab is displayed only when
+		 * // 8/ Deny insert on the view to a user (todo)
+		 * // 9/ The user should not see an import tab on the view (todo)
+		 * 8/ Drop the views
+		 * 9/ Check that student table has an import tab.
+		 * 10/ Check that student table import tab is displayed only when
 		 *    user has import permissions.
 		 *    Note: The problem with the way this is written is that
 		 *    $user does not have insert permission on the student table,
@@ -61,7 +62,15 @@
 		// $t->assertText("//table[@class='tabs']//td//*[text()='{$lang['strimport']}']", "{$lang['strimport']}");
 
 	/** 3 **/
-		$t->addComment('3. Create "complex" view of student table');
+		if ($t->data->major_version < 9.3) {
+		   	$t->addComment('3. Replace data on import skipped for PG < 9.3');
+		} else {
+		  	$t->addComment('3. Can simple view data be replaced on import?');
+			$t->click("//input[@name='replace']");
+		}
+
+	/** 4 **/
+		$t->addComment('4. Create "complex" view of student table');
 		$t->clickAndWait('link=public');
 		$t->clickAndWait("link={$lang['strviews']}");
 		$t->clickAndWait("link={$lang['strcreateview']}");
@@ -71,16 +80,16 @@
 		$t->clickAndWait("//input[@value='Create']");
 		$t->assertText("//p[@class='message']", "{$lang['strviewcreated']}");
 
-	/** 4 **/
-		$t->addComment('4. The "complex" view should not have an "import" tab');
+	/** 5 **/
+		$t->addComment('5. The "complex" view should not have an "import" tab');
 		$t->clickAndWait('link=public');
 		$t->clickAndWait("link={$lang['strviews']}");
 		$t->clickAndWait("link=complex_view");
 		$t->assertErrorOnNext("Element link={$lang['strimport']} not found");
 		$t->clickAndWait("link={$lang['strimport']}");
 
-	/** 5 **/
-		$t->addComment('5. Give the "complex" view an insert trigger');
+	/** 6 **/
+		$t->addComment('6. Give the "complex" view an insert trigger');
 		$t->clickAndWait('link=public');
 		$t->clickAndWait("link={$lang['strfunctions']}");
 		$t->clickAndWait("link={$lang['strcreateplfunction']}");
@@ -101,17 +110,17 @@ END;
 		// as a trigger.  But ppa does not yet support this.
 
 
-	/** 6 **/
+	/** 7 **/
 		/*****    NEEDS TRIGGER ABOVE
-		$t->addComment('6. The "complex" view should now have an "import" tab');
+		$t->addComment('7. The "complex" view should now have an "import" tab');
 		$t->clickAndWait('link=public');
 		$t->clickAndWait("link={$lang['strviews']}");
 		$t->clickAndWait("link=complex_view");
 		$t->clickAndWait("link={$lang['strimport']}");
 		*****/
 
-	/** 7 **/
-		$t->addComment('7. Drop the views and functions');
+	/** 8 **/
+		$t->addComment('8. Drop the views and functions');
 		$t->clickAndWait('link=public');
 		$t->clickAndWait("link={$lang['strviews']}");
 		$t->clickAndWait("//tr/td/a[text()='student_view']/../../td/a[text()='{$lang['strdrop']}']");
@@ -133,15 +142,15 @@ END;
 		$t->clickAndWait("//input[@type='submit'][@name='drop']");
 		$t->assertText("//p[@class='message']", $lang['strfunctiondropped']);
 
-	/** 8 **/
-		$t->addComment('8. Check student table has an import tab');
+	/** 9 **/
+		$t->addComment('9. Check student table has an import tab');
 		$t->clickAndWait('link=public');
 		$t->clickAndWait("link={$lang['strtables']}");
 		$t->clickAndWait('link=student');
 		$t->clickAndWait("link={$lang['strimport']}");
 
-	/** 9 **/
-		$t->addComment('9. Check import tab displayed only given insert permission');
+	/** 10 **/
+		$t->addComment('10. Check import tab displayed only given insert permission');
 		$t->s_echo("Revoke {$user}'s insert permission on student table");
 		$t->clickAndWait('link=public');
 		$t->clickAndWait("link={$lang['strtables']}");
