@@ -23,7 +23,8 @@
 		 * // 11/ The view should not allow replacement of content (todo)
 		 * 8/ Drop the views
 		 * 9/ Check that student table has an import tab.
-		 * 10/ Check that student table import tab is displayed only when
+		 * 10/ Check that the student data can be replace on import.
+		 * 11/ Check that student table import tab is displayed only when
 		 *    user has import permissions.
 		 *    Note: The problem with the way this is written is that
 		 *    $user does not have insert permission on the student table,
@@ -31,6 +32,9 @@
 		 *    This is not a problem, and it's left this way because it's				*    more robust to begin by revoking permission regardless,
 		 *    but it does leave $user with insert permission.
 		 *    So, this process may need revision.
+		 * 12/ Check that replacement of student data on import is
+		 *    available only when user has delete permissions.
+		 *    Note: Delete permission is done like insert permission above.
 		 **/
 		$t = new TestBuilder($test_title,
 			'Test import and export features'
@@ -152,7 +156,11 @@ END;
 		$t->clickAndWait("link={$lang['strimport']}");
 
 	/** 10 **/
-		$t->addComment('10. Check import tab displayed only given insert permission');
+		$t->addComment('10. Check student data is replacable on import');
+		$t->click("//input[@name='replace']");
+
+	/** 11 **/
+		$t->addComment('11. Check import tab displayed only given insert permission');
 		$t->s_echo("Revoke {$user}'s insert permission on student table");
 		$t->clickAndWait('link=public');
 		$t->clickAndWait("link={$lang['strtables']}");
@@ -198,6 +206,57 @@ END;
 		$t->clickAndWait("link={$lang['strgrant']}");
 		$t->select('name=username[]', "value={$user}");
 		$t->click("//input[@id='privilege[INSERT]']");
+		$t->clickAndWait("//input[@type='submit'][@value='{$lang['strgrant']}']");
+		$t->assertText("//p[@class='message']", $lang['strgranted']);
+
+	/** 12 **/
+		$t->addComment('12. Replace checkbox displayed only given delete permission');
+		$t->s_echo("Revoke {$user}'s delete permission on student table");
+		$t->clickAndWait('link=public');
+		$t->clickAndWait("link={$lang['strtables']}");
+		$t->clickAndWait('link=student');
+		$t->clickAndWait("link={$lang['strprivileges']}");
+		$t->clickAndWait("link={$lang['strrevoke']}");
+		$t->select('name=username[]', "value={$user}");
+		$t->click("//input[@id='privilege[DELETE]']");
+		$t->clickAndWait("//input[@type='submit'][@value='{$lang['strrevoke']}']");
+		$t->assertText("//p[@class='message']", $lang['strgranted']);
+
+		$t->s_echo("Log out {$admin_user}");
+		$t->logout();
+
+		$t->s_echo("Log in {$user}");
+		$t->login($user, $user_pass);
+
+		$t->s_echo('Check replace checkbox not displayed');
+		$t->clickAndWait("link={$lang['strdatabases']}");
+		$t->clickAndWait("link={$testdb}");
+		$t->clickAndWait("link={$lang['strschemas']}");
+		$t->clickAndWait('link=public');
+		$t->clickAndWait("link={$lang['strtables']}");
+		$t->clickAndWait('link=student');
+		$t->clickAndWait("link={$lang['strimport']}");
+		$t->assertErrorOnNext("Element //input[@name='replace'] not found");
+		$t->click("//input[@name='replace']");
+
+		$t->s_echo("Log out {$user}");
+		$t->logout();
+
+		$t->s_echo("Log in {$admin_user}");
+		$t->login($admin_user, $admin_user_pass);
+
+		$t->s_echo("Restore {$user}'s delete permission on student table");
+		$t->clickAndWait("link={$lang['strdatabases']}");
+		$t->clickAndWait("link={$testdb}");
+		$t->clickAndWait("link={$lang['strschemas']}");
+		$t->clickAndWait('link=public');
+		$t->clickAndWait('link=public');
+		$t->clickAndWait("link={$lang['strtables']}");
+		$t->clickAndWait('link=student');
+		$t->clickAndWait("link={$lang['strprivileges']}");
+		$t->clickAndWait("link={$lang['strgrant']}");
+		$t->select('name=username[]', "value={$user}");
+		$t->click("//input[@id='privilege[DELETE]']");
 		$t->clickAndWait("//input[@type='submit'][@value='{$lang['strgrant']}']");
 		$t->assertText("//p[@class='message']", $lang['strgranted']);
 
