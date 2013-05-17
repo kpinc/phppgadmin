@@ -1,0 +1,21 @@
+This file contains the comments that should go into
+the code but are omitted from javascript for what
+are usually cultural reasons.
+
+xtree2.js has been modified from the original
+upstream version to support connections to multiple
+ports on a single server.  This was done by putting
+both the protocol and the port, if any, into the
+cookie name used to support persistence.
+Technically, the protocol implies the port but this
+is easier and should work just as well.
+
+While it is not ordinarily a good idea to modify
+upstream sources, in this case the the upstream
+license was changed in more recent releases to the
+Apache license.  Since this is incompabible with
+the GPLv2, the license of the xtree2.js code as
+used and the license in PPA as a whole, it seems
+reasonable that we will not be able to use newer
+upstream releases and so we may as well go ahead
+and modify the code.

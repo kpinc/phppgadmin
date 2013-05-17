@@ -57,6 +57,22 @@ var _p = WebFXTreePersistence.prototype;
 _p.getExpanded = function (oNode) { return false; };
 _p.setExpanded = function (oNode, bOpen) {};
 
+_p.portCookieNameSuffix = function () {
+	var splitURL = document.URL.split(':');
+	var schemeSuffix = '-' + splitURL[0];
+
+	var pathPart = splitURL.slice(1).join(':');
+	if (pathPart.charAt(0) != '/')
+		return schemeSuffix;  // opaque uri
+	if (pathPart.charAt(1) != '/')
+		return schemeSuffix;  // no authority
+
+	var port = pathPart.split('/')[2].split('?')[0].split(':')[1];
+	if (port == undefined)
+		return schemeSuffix;
+
+	return schemeSuffix + '-' + port;
+};
 
 
 // Cookie handling
@@ -94,7 +110,7 @@ _p.removeCookie = function (name) {
 function WebFXTreeCookiePersistence() {
 	this._openedMap = {};
 	this._cookies = new WebFXCookie;
-	var s = this._cookies.getCookie(this.cookieName);
+	var s = this._cookies.getCookie(this.cookieName());
 	if (s) {
 		var a = s.split("+");
 		for (var i = a.length - 1; i >= 0; i--)
@@ -104,7 +120,9 @@ function WebFXTreeCookiePersistence() {
 
 _p = WebFXTreeCookiePersistence.prototype = new WebFXTreePersistence;
 
-_p.cookieName = "webfx-tree-cookie-persistence"
+_p.cookieName = function () {
+	return "webfx-tree-cookie-persistence" + this.portCookieNameSuffix();
+};
 
 _p.getExpanded = function (oNode) {
 	return oNode.id in this._openedMap;
@@ -123,7 +141,7 @@ _p.setExpanded = function (oNode, bOpen) {
 		var i = 0;
 		for (var id in this._openedMap)
 			res[i++] = id;
-		this._cookies.setCookie(this.cookieName, res.join("+"));
+		this._cookies.setCookie(this.cookieName(), res.join("+"));
 	}
 };
 
