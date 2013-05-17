@@ -52,7 +52,7 @@
 
 	// Start session (if not auto-started)
 	if (!ini_get('session.auto_start')) {
-		session_name('PPA_ID');
+		session_name("PPA_ID_{$_SERVER['SERVER_PORT']}");
 		session_start();
 	}
 
