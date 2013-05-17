@@ -57,22 +57,7 @@ var _p = WebFXTreePersistence.prototype;
 _p.getExpanded = function (oNode) { return false; };
 _p.setExpanded = function (oNode, bOpen) {};
 
-_p.portCookieNameSuffix = function () {
-	var splitURL = document.URL.split(':');
-	var schemeSuffix = '-' + splitURL[0];
 
-	var pathPart = splitURL.slice(1).join(':');
-	if (pathPart.charAt(0) != '/')
-		return schemeSuffix;  // opaque uri
-	if (pathPart.charAt(1) != '/')
-		return schemeSuffix;  // no authority
-
-	var port = pathPart.split('/')[2].split('?')[0].split(':')[1];
-	if (port == undefined)
-		return schemeSuffix;
-
-	return schemeSuffix + '-' + port;
-};
 
 
 // Cookie handling
@@ -107,6 +92,37 @@ _p.removeCookie = function (name) {
 //
 // This is uses one cookie with the ids of the expanded nodes separated using '+'
 //
+function WebFXTreeCookieName() {}
+
+_p = WebFXTreeCookieName.prototype;
+
+_p.cookieNamePrefix = "webfx-tree-cookie-persistence";
+
+_p.cookieNameDelim = '-';
+
+_p.cookieNameSuffix = function () {
+	var splitURL = document.URL.split(':');
+	var schemeSuffix = this.cookieNameDelim + splitURL[0];
+
+	var pathPart = splitURL.slice(1).join(':');
+	if (pathPart.charAt(0) != '/')
+		return schemeSuffix;  // opaque uri
+	if (pathPart.charAt(1) != '/')
+		return schemeSuffix;  // no authority
+
+	var port = pathPart.split('/')[2].split('?')[0].split(':')[1];
+	if (port == undefined)
+		return schemeSuffix;
+
+	return schemeSuffix + this.cookieNameDelim + port;
+};
+
+_p.cookieName = function () {
+	return this.cookieNamePrefix + this.cookieNameSuffix();
+};
+
+
+
 function WebFXTreeCookiePersistence() {
 	this._openedMap = {};
 	this._cookies = new WebFXCookie;
@@ -121,8 +137,11 @@ function WebFXTreeCookiePersistence() {
 _p = WebFXTreeCookiePersistence.prototype = new WebFXTreePersistence;
 
 _p.cookieName = function () {
-	return "webfx-tree-cookie-persistence" + this.portCookieNameSuffix();
-};
+	var cn = new WebFXTreeCookieName;
+	return function () {
+		return cn.cookieName();
+	}
+}();
 
 _p.getExpanded = function (oNode) {
 	return oNode.id in this._openedMap;
