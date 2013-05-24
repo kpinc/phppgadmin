@@ -839,6 +839,9 @@
 	$lang['strmode'] = 'Lock mode';
 	$lang['strislockheld'] = 'Is lock held?';
 
+	// Processes
+	$lang['strshowinternalprocesses'] = 'Show internal processes';
+
 	// Prepared transactions
 	$lang['strpreparedxacts'] = 'Prepared transactions';
 	$lang['strxactid'] = 'Transaction ID';
