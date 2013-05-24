@@ -392,7 +392,10 @@
 		$misc->printMsg($msg);
 
 		if (strlen($msg) === 0) {
-			echo "<br /><div id=\"control\" style=\"display: inline;\" class=\"active\"><noscript><a href=\"\"><img src=\"".$misc->icon('Refresh')."\" alt=\"{$lang['strrefresh']}\" title=\"{$lang['strrefresh']}\"/>&nbsp;{$lang['strrefresh']}</a></noscript></div>";
+		   	echo "<table>\n<tr>\n";
+			echo "<td><div id=\"control\" style=\"display: inline;\" class=\"active\"><noscript><a href=\"\"><img src=\"".$misc->icon('Refresh')."\" alt=\"{$lang['strrefresh']}\" title=\"{$lang['strrefresh']}\"/>&nbsp;{$lang['strrefresh']}</a></noscript></div></td>\n";
+			echo "<td><input type=\"checkbox\" id=\"id_filterip\" name=\"filterip\" /><label for=\"id_filterip\">{$lang['strshowinternalprocesses']}</label></td>\n";
+			echo "</tr>\n</table>\n";
 		}
 
 		echo "<div id=\"data_block\">";
