@@ -434,7 +434,7 @@
 
 		// Fetch the processes from the database
 		echo "<h3>{$lang['strprocesses']}</h3>\n";
-		$processes = $data->getProcesses($_REQUEST['database']);
+		$processes = $data->getProcesses(false, $_REQUEST['database']);
 
 		$columns = array(
 			'user' => array(

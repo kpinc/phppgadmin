@@ -30,25 +30,39 @@ class Postgres91 extends Postgres92 {
 	// Administration functions
 	/**
 	 * Returns all available process information.
+	 * @param $filter             (boolean) When true filter out the process
+	 * 		  					  used to query the processes.
 	 * @param $database (optional) Find only connections to specified database
 	 * @return A recordset
 	 */
-	function getProcesses($database = null) {
+	function getProcesses($filter, $database = null) {
 		if ($database === null)
-			$sql = "SELECT datname, usename, procpid AS pid, waiting, current_query AS query, query_start
-				FROM pg_catalog.pg_stat_activity
-				ORDER BY datname, usename, procpid";
+		   	$whereclause = '';
 		else {
 			$this->clean($database);
-			$sql = "SELECT datname, usename, procpid AS pid, waiting, current_query AS query, query_start
-				FROM pg_catalog.pg_stat_activity
-				WHERE datname='{$database}'
-				ORDER BY usename, procpid";
+			$whereclause = "datname='{$database}'";
 		}
 
-		$rc = $this->selectSet($sql);
+		if ($filter) {
+		   	$hash = sha1(rand());
+			$hashcol = "'{$hash}' AS hash,";
 
-		return $rc;
+		   	if ($whereclause !== '')
+			   	$whereclause .= ' AND ';
+			$whereclause .= "POSITION('{$hash}' IN current_query) = 0";
+		} else {
+		  	$hashcol = '';
+		}
+
+		if ($whereclause !== '')
+		   	$whereclause = "WHERE ${whereclause}";
+
+		$sql = "SELECT datname, usename, procpid AS pid, waiting, current_query AS query, query_start
+			FROM pg_catalog.pg_stat_activity
+			{$whereclause}
+			ORDER BY datname, usename, procpid";
+
+		return $this->selectSet($sql);
 	}
 
 	// Tablespace functions
