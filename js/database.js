@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
 	var timeid = query = null;
+	var aborting = false;
 	var controlLink = $('#control');
 	var errmsg = $('<p class="errmsg">'+Database.errmsg+'</p>')
 		.insertBefore(controlLink)
@@ -24,7 +25,8 @@ $(document).ready(function() {
 				},
 				error: function() {
 					controlLink.click();
-					errmsg.show();
+					if (!aborting)
+						errmsg.show();
 				},
 				complete: function () {
 					loading.hide();
@@ -40,6 +42,7 @@ $(document).ready(function() {
 				+ Database.str_stop.text
 			);
 			controlLink.one('click', null, null, stopRefresh);
+			aborting = false;
 			refreshTable();
 			timeid = window.setInterval(refreshTable, Database.ajax_time_refresh);
 		};
@@ -47,7 +50,10 @@ $(document).ready(function() {
 			window.clearInterval(timeid);
 			$(errmsg).hide();
 			$(loading).hide();
-			if (query) query.abort();
+			if (query) {
+				aborting = true;
+				query.abort();
+			}
 			controlLink.html('<img src="'+ Database.str_start.icon +'" alt="" />&nbsp;'
 				+ Database.str_start.text
 			);
