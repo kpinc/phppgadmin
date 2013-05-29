@@ -5,7 +5,7 @@ $(document).ready(function() {
 	var errmsg = $('<p class="errmsg">'+Database.errmsg+'</p>')
 		.insertBefore(controlLink)
 		.hide();
-	var loading = $('<img class="loading" alt="[loading]" src="'+ Database.load_icon +'" />')
+	var loading = $('<div style="display: inline;">&nbsp;&nbsp;&nbsp; <img class="loading" alt="[loading]" src="'+ Database.load_icon +'" /></div>')
 		.insertAfter(controlLink)
 		.hide();
 
@@ -21,7 +21,6 @@ $(document).ready(function() {
 				contentType: 'application/x-www-form-urlencoded',
 				success: function(html) {
 					$('#data_block').html(html);
-					timeid = window.setTimeout(refreshTable, Database.ajax_time_refresh)
 				},
 				error: function() {
 					controlLink.click();
@@ -34,23 +33,28 @@ $(document).ready(function() {
 		}
 	}
 
-	controlLink.toggle(
-		function() {
+	controlLink.one('click', null, null, function() {
+		function startRefresh() {
 			$(errmsg).hide();
-			timeid = window.setTimeout(refreshTable, Database.ajax_time_refresh);
 			controlLink.html('<img src="'+ Database.str_stop.icon +'" alt="" />&nbsp;'
-				+ Database.str_stop.text + '&nbsp;&nbsp;&nbsp;'
+				+ Database.str_stop.text
 			);
-		},
-		function() {
+			controlLink.one('click', null, null, stopRefresh);
+			timeid = window.setInterval(refreshTable, Database.ajax_time_refresh);
+		};
+		function stopRefresh() {
+			window.clearInterval(timeid);
 			$(errmsg).hide();
 			$(loading).hide();
-			window.clearInterval(timeid);
 			if (query) query.abort();
 			controlLink.html('<img src="'+ Database.str_start.icon +'" alt="" />&nbsp;'
 				+ Database.str_start.text
 			);
-		}
+			controlLink.one('click', null, null, startRefresh);
+		};
+
+		return startRefresh;
+	}()
 	);
 
 	/* preload images */
