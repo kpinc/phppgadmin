@@ -392,7 +392,7 @@
 		$misc->printMsg($msg);
 
 		if (strlen($msg) === 0) {
-			echo "<br /><div id=\"control\" style=\"display: inline;\"><noscript><a href=\"\"><img src=\"".$misc->icon('Refresh')."\" alt=\"{$lang['strrefresh']}\" title=\"{$lang['strrefresh']}\"/>&nbsp;{$lang['strrefresh']}</a></noscript></div>";
+			echo "<br /><div id=\"control\" style=\"display: inline;\" class=\"active\"><noscript><a href=\"\"><img src=\"".$misc->icon('Refresh')."\" alt=\"{$lang['strrefresh']}\" title=\"{$lang['strrefresh']}\"/>&nbsp;{$lang['strrefresh']}</a></noscript></div>";
 		}
 
 		echo "<div id=\"data_block\">";
