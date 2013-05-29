@@ -40,6 +40,7 @@ $(document).ready(function() {
 				+ Database.str_stop.text
 			);
 			controlLink.one('click', null, null, stopRefresh);
+			refreshTable();
 			timeid = window.setInterval(refreshTable, Database.ajax_time_refresh);
 		};
 		function stopRefresh() {
