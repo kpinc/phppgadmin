@@ -13,7 +13,7 @@ $(document).ready(function() {
 	var errmsg = $('<p class="errmsg">'+Database.errmsg+'</p>')
 		.insertBefore($('#ctable'))
 		.hide();
-	var loading = $('<div style="display: inline;">&nbsp;&nbsp;&nbsp; <img class="loading" alt="[loading]" src="'+ Database.load_icon +'" /></div>')
+	var loading = $('<div style="display: inline;">&nbsp; <img class="loading" alt="[loading]" src="'+ Database.load_icon +'" /> &nbsp;&nbsp;</div>')
 		.insertAfter(controlLink)
 		.hide();
 
