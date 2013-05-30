@@ -198,7 +198,7 @@
 	$lang['strnoserversupplied'] = 'No server supplied!';
 	$lang['strbadpgdumppath'] = 'Export error: Failed to execute pg_dump (given path in your conf/config.inc.php : %s). Please, fix this path in your configuration and relog.';
 	$lang['strbadpgdumpallpath'] = 'Export error: Failed to execute pg_dumpall (given path in your conf/config.inc.php : %s). Please, fix this path in your configuration and relog.';
-	$lang['strconnectionfail'] = 'Can not connect to server.';
+	$lang['strconnectionfail'] = 'Can not connect to webserver.';
 
 	// Tables
 	$lang['strtable'] = 'Table';
