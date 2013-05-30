@@ -2,7 +2,8 @@ $(document).ready(function() {
 
 	var timeid = query = null;
 	var aborting = false;
-	var controlLink = $('#control');
+	var controlLink = $('#control')
+		.addClass('activecursor');
 	var errmsg = $('<p class="errmsg">'+Database.errmsg+'</p>')
 		.insertBefore(controlLink)
 		.hide();
