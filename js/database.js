@@ -18,7 +18,7 @@ $(document).ready(function() {
 		.hide();
 
 	/* Make control container width static. */
-	var controlBox = $(controlLink.parent());
+	var controlBox = controlLink.parent();
 	controlLink.html(startHtml);
 	var controlBoxWidth = controlBox.width();
 	var controlBoxCssWidth = controlBox.css('width');
