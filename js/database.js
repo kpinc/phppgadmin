@@ -19,6 +19,7 @@ $(document).ready(function() {
 
 	var showInternals = $('#id_filterip');
 	var showInactive = $('#id_inactive');
+	var dataBlock = $('#data_block');
 
 	function refreshTable() {
 		if (Database.ajax_time_refresh > 0) {
@@ -31,7 +32,7 @@ $(document).ready(function() {
 				cache: false,
 				contentType: 'application/x-www-form-urlencoded',
 				success: function(html) {
-					$('#data_block').html(html);
+					dataBlock.html(html);
 				},
 				error: function() {
 					var a = aborting;
@@ -77,11 +78,11 @@ $(document).ready(function() {
 	);
 
 	/* preload images */
-	$('#data_block')
+	dataBlock
 		.html('<div <img src="'+ Database.load_icon +'" alt=""><img src="'+ Database.str_start.icon +'" alt=""><img src= "'+ Database.str_stop.icon +'" alt=""></div>')
 		.hide()
 		.imagesLoaded(function() {
-			$('#data_block')
+			dataBlock
 				.html('')
 				.show();
 	
