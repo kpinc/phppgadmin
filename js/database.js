@@ -29,10 +29,12 @@ $(document).ready(function() {
 	loading.hide();
 	controlBox.css('width', controlBoxCssWidth);
 
+	var showInternals = $('#id_filterip');
+
 	function refreshTable() {
 		if (Database.ajax_time_refresh > 0) {
 			loading.show();
-			query = $.ajax({
+			Settings = {
 				type: 'GET',
 				dataType: 'html',
 				data: {server: Database.server, database: Database.dbname, action: Database.action},
@@ -51,7 +53,10 @@ $(document).ready(function() {
 				complete: function () {
 					loading.hide();
 				}
-			});
+			};
+			if (showInternals.prop('checked'))
+				Settings.data.filterip = 'checked';
+			query = $.ajax(Settings);
 		}
 	}
 
