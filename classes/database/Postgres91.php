@@ -107,7 +107,7 @@ class Postgres91 extends Postgres92 {
 
 	// Capabilities
 	function hasUserSignals() { return false; }
-
+	function hasShowIdleProcesses() { return false; }
 
 
 }
