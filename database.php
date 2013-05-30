@@ -440,7 +440,7 @@
 
 		// Fetch the processes from the database
 		echo "<h3>{$lang['strprocesses']}</h3>\n";
-		$processes = $data->getProcesses(!isset($_REQUEST['filterip']), $_REQUEST['database']);
+		$processes = $data->getProcesses(!isset($_REQUEST['filterip']), true, $_REQUEST['database']);
 
 		$columns = array(
 			'user' => array(

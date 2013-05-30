@@ -7195,10 +7195,12 @@ class Postgres extends ADODB_base {
 	 * Returns all available process information.
 	 * @param $filter             (boolean) When true filter out the process
 	 * 		  					  used to query the processes.
+	 * @param $inactive           (boolean) when true also show db connections
+     * 		  					  that are doing nothing.
 	 * @param $database (optional) Find only connections to specified database
 	 * @return A recordset
 	 */
-	function getProcesses($filter, $database = null) {
+	function getProcesses($filter, $inactive, $database = null) {
 		if ($database === null)
 		   	$whereclause = '';
 		else {
@@ -7215,6 +7217,12 @@ class Postgres extends ADODB_base {
 			$whereclause .= "POSITION('{$hash}' IN query) = 0";
 		} else {
 		  	$hashcol = '';
+		}
+
+		if (!$inactive) {
+		   	if ($whereclause !== '')
+			   	$whereclause .= ' AND ';
+			$whereclause .= "state != 'idle'";
 		}
 
 		if ($whereclause !== '')
