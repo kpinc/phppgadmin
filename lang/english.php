@@ -841,6 +841,7 @@
 
 	// Processes
 	$lang['strshowinternalprocesses'] = 'Show internal processes';
+	$lang['strshowinactiveconnections'] = 'Show inactive connections';
 
 	// Prepared transactions
 	$lang['strpreparedxacts'] = 'Prepared transactions';
