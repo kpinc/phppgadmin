@@ -391,12 +391,15 @@
 		$misc->printTabs('database','processes');
 		$misc->printMsg($msg);
 
-		if (strlen($msg) === 0) {
-		   	echo "<table id=\"ctable\">\n<tr>\n";
-			echo "<td><div id=\"control\" style=\"display: inline;\" class=\"active\"><noscript><a href=\"\"><img src=\"".$misc->icon('Refresh')."\" alt=\"{$lang['strrefresh']}\" title=\"{$lang['strrefresh']}\"/>&nbsp;{$lang['strrefresh']}</a></noscript></div></td>\n";
-			echo "<td><input type=\"checkbox\" id=\"id_filterip\" name=\"filterip\" /><label for=\"id_filterip\">{$lang['strshowinternalprocesses']}</label></td>\n";
-			echo "</tr>\n</table>\n";
-		}
+		echo "<form action=\"database.php\" method=\"post\">\n";
+	   	echo "<table id=\"ctable\">\n<tr>\n";
+		echo "<td><div id=\"control\" style=\"display: inline;\" class=\"active\"><noscript><button name=\"submit\" value=\"submit\" type=\"submit\"><img src=\"".$misc->icon('Refresh')."\" alt=\"{$lang['strrefresh']}\" title=\"{$lang['strrefresh']}\"/>&nbsp;{$lang['strrefresh']}</button></noscript></div></td>\n";
+		echo "<td><input type=\"checkbox\" id=\"id_filterip\" name=\"filterip\"", (isset($_REQUEST['filterip']) ? ' checked="checked"' : ''), "/><label for=\"id_filterip\">{$lang['strshowinternalprocesses']}</label></td>\n";
+		echo "</tr>\n</table>\n";
+		echo "<input type=\"hidden\" name=\"subject\" value=\"database\" />\n";
+		echo "<input type=\"hidden\" name=\"action\" value=\"processes\" />\n";
+		echo $misc->form;
+		echo "</form>\n";
 
 		echo "<div id=\"data_block\">";
 		currentProcesses();
@@ -437,7 +440,7 @@
 
 		// Fetch the processes from the database
 		echo "<h3>{$lang['strprocesses']}</h3>\n";
-		$processes = $data->getProcesses(false, $_REQUEST['database']);
+		$processes = $data->getProcesses(!isset($_REQUEST['filterip']), $_REQUEST['database']);
 
 		$columns = array(
 			'user' => array(
