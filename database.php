@@ -395,6 +395,7 @@
 	   	echo "<table id=\"ctable\">\n<tr>\n";
 		echo "<td><div id=\"control\" style=\"display: inline;\" class=\"active\"><noscript><button name=\"submit\" value=\"submit\" type=\"submit\"><img src=\"".$misc->icon('Refresh')."\" alt=\"{$lang['strrefresh']}\" title=\"{$lang['strrefresh']}\"/>&nbsp;{$lang['strrefresh']}</button></noscript></div></td>\n";
 		echo "<td><input type=\"checkbox\" id=\"id_filterip\" name=\"filterip\"", (isset($_REQUEST['filterip']) ? ' checked="checked"' : ''), "/><label for=\"id_filterip\">{$lang['strshowinternalprocesses']}</label></td>\n";
+		echo "<td><input type=\"checkbox\" id=\"id_inactive\" name=\"inactive\"", (isset($_REQUEST['inactive']) ? ' checked="checked"' : ''), "/><label for=\"id_inactive\">{$lang['strshowinactiveconnections']}</label></td>\n";
 		echo "</tr>\n</table>\n";
 		echo "<input type=\"hidden\" name=\"subject\" value=\"database\" />\n";
 		echo "<input type=\"hidden\" name=\"action\" value=\"processes\" />\n";
@@ -440,7 +441,7 @@
 
 		// Fetch the processes from the database
 		echo "<h3>{$lang['strprocesses']}</h3>\n";
-		$processes = $data->getProcesses(!isset($_REQUEST['filterip']), true, $_REQUEST['database']);
+		$processes = $data->getProcesses(!isset($_REQUEST['filterip']), isset($_REQUEST['inactive']), $_REQUEST['database']);
 
 		$columns = array(
 			'user' => array(
