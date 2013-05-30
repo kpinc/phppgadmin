@@ -30,6 +30,7 @@ $(document).ready(function() {
 	controlBox.css('width', controlBoxCssWidth);
 
 	var showInternals = $('#id_filterip');
+	var showInactive = $('#id_inactive');
 
 	function refreshTable() {
 		if (Database.ajax_time_refresh > 0) {
@@ -55,6 +56,8 @@ $(document).ready(function() {
 			};
 			if (showInternals.prop('checked'))
 				settings.data.filterip = 'checked';
+			if (showInactive.prop('checked'))
+				settings.data.inactive = 'checked';
 			query = $.ajax(settings);
 		}
 	}
