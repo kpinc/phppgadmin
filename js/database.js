@@ -2,6 +2,12 @@ $(document).ready(function() {
 
 	var timeid = query = null;
 	var aborting = false;
+
+	var stopHtml = '<img src="'+ Database.str_stop.icon +'" alt="" />&nbsp;'
+		+ Database.str_stop.text;
+	var startHtml = '<img src="'+ Database.str_start.icon +'" alt="" />&nbsp;'
+		+ Database.str_start.text;
+
 	var controlLink = $('#control')
 		.addClass('activecursor');
 	var errmsg = $('<p class="errmsg">'+Database.errmsg+'</p>')
@@ -39,9 +45,7 @@ $(document).ready(function() {
 	controlLink.one('click', null, null, function() {
 		function startRefresh() {
 			$(errmsg).hide();
-			controlLink.html('<img src="'+ Database.str_stop.icon +'" alt="" />&nbsp;'
-				+ Database.str_stop.text
-			);
+			controlLink.html(stopHtml);
 			controlLink.one('click', null, null, stopRefresh);
 			aborting = false;
 			refreshTable();
@@ -55,9 +59,7 @@ $(document).ready(function() {
 				aborting = true;
 				query.abort();
 			}
-			controlLink.html('<img src="'+ Database.str_start.icon +'" alt="" />&nbsp;'
-				+ Database.str_start.text
-			);
+			controlLink.html(startHtml);
 			controlLink.one('click', null, null, startRefresh);
 		};
 
