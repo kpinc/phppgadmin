@@ -24,7 +24,7 @@ $(document).ready(function() {
 	function refreshTable() {
 		if (Database.ajax_time_refresh > 0) {
 			loading.show();
-			settings = {
+			Settings = {
 				type: 'GET',
 				dataType: 'html',
 				data: {server: Database.server, database: Database.dbname, action: Database.action},
@@ -45,10 +45,10 @@ $(document).ready(function() {
 				}
 			};
 			if (showInternals.prop('checked'))
-				settings.data.filterip = 'checked';
+				Settings.data.filterip = 'checked';
 			if (showInactive.prop('checked'))
-				settings.data.inactive = 'checked';
-			query = $.ajax(settings);
+				Settings.data.inactive = 'checked';
+			query = $.ajax(Settings);
 		}
 	}
 
