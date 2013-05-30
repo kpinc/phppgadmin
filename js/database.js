@@ -65,7 +65,7 @@ $(document).ready(function() {
 
 	controlLink.one('click', null, null, function() {
 		function startRefresh() {
-			$(errmsg).hide();
+			errmsg.hide();
 			controlLink.html(stopHtml);
 			controlLink.one('click', null, null, stopRefresh);
 			aborting = false;
@@ -74,8 +74,8 @@ $(document).ready(function() {
 		};
 		function stopRefresh() {
 			window.clearInterval(timeid);
-			$(errmsg).hide();
-			$(loading).hide();
+			errmsg.hide();
+			loading.hide();
 			if (query) {
 				aborting = true;
 				query.abort();
