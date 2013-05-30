@@ -5,7 +5,7 @@ $(document).ready(function() {
 	var controlLink = $('#control')
 		.addClass('activecursor');
 	var errmsg = $('<p class="errmsg">'+Database.errmsg+'</p>')
-		.insertBefore(controlLink)
+		.insertBefore($('#ctable'))
 		.hide();
 	var loading = $('<div style="display: inline;">&nbsp;&nbsp;&nbsp; <img class="loading" alt="[loading]" src="'+ Database.load_icon +'" /></div>')
 		.insertAfter(controlLink)
