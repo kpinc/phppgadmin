@@ -230,10 +230,12 @@ class Postgres81 extends Postgres82 {
 	 * Returns all available process information.
 	 * @param $filter             (boolean) When true filter out the process
 	 * 		  					  used to query the processes.
+	 * @param $inactive           Ignored.  <= 9.1 does not show idle
+	 * 		  					  connections.
 	 * @param $database (optional) Find only connections to specified database
 	 * @return A recordset
 	 */
-	function getProcesses($filter, $database = null) {
+	function getProcesses($filter, $inactive, $database = null) {
 		if ($database === null)
 		   	$whereclause = '';
 		else {
