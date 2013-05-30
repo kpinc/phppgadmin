@@ -46,8 +46,9 @@ $(document).ready(function() {
 					$('#data_block').html(html);
 				},
 				error: function() {
+					var a = aborting;
 					controlLink.click();
-					if (!aborting)
+					if (!a)
 						errmsg.show();
 				},
 				complete: function () {
