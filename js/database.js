@@ -17,6 +17,18 @@ $(document).ready(function() {
 		.insertAfter(controlLink)
 		.hide();
 
+	/* Make control container width static. */
+	var controlBox = controlLink.parent();
+	controlLink.html(startHtml);
+	var controlBoxWidth = controlBox.width();
+	var controlBoxCssWidth = controlBox.css('width');
+	controlLink.html(stopHtml);
+	loading.show();
+	if (controlBoxWidth < controlBox.width())
+		controlBoxCssWidth = controlBox.css('width');
+	loading.hide();
+	controlBox.css('width', controlBoxCssWidth);
+
 	function refreshTable() {
 		if (Database.ajax_time_refresh > 0) {
 			loading.show();
