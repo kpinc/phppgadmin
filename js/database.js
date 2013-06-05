@@ -17,18 +17,6 @@ $(document).ready(function() {
 		.insertAfter(controlLink)
 		.hide();
 
-	/* Make control container width static. */
-	var controlBox = controlLink.parent();
-	controlLink.html(startHtml);
-	var controlBoxWidth = controlBox.width();
-	var controlBoxCssWidth = controlBox.css('width');
-	controlLink.html(stopHtml);
-	loading.show();
-	if (controlBoxWidth < controlBox.width())
-		controlBoxCssWidth = controlBox.css('width');
-	loading.hide();
-	controlBox.css('width', controlBoxCssWidth);
-
 	var showInternals = $('#id_filterip');
 	var showInactive = $('#id_inactive');
 
@@ -89,11 +77,27 @@ $(document).ready(function() {
 	);
 
 	/* preload images */
-	$('#control img').hide()
-		.attr('src', Database.str_start.icon)
-		.attr('src', Database.str_stop.icon)
-		.show();
+	$('#data_block')
+		.html('<div <img src="'+ Database.load_icon +'" alt=""><img src="'+ Database.str_start.icon +'" alt=""><img src= "'+ Database.str_stop.icon +'" alt=""></div>')
+		.hide()
+		.imagesLoaded(function() {
+			$('#data_block')
+				.html('')
+				.show();
 	
-	/* start refreshing */
-	controlLink.click();
+			/* Make control container width static. */
+			var controlBox = controlLink.parent();
+			controlLink.html(startHtml);
+			var controlBoxWidth = controlBox.width();
+			var controlBoxCssWidth = controlBox.css('width');
+			controlLink.html(stopHtml);
+			loading.show();
+			if (controlBoxWidth < controlBox.width())
+				controlBoxCssWidth = controlBox.css('width');
+			loading.hide();
+			controlBox.css('width', controlBoxCssWidth);
+
+			/* start refreshing */
+			controlLink.click();
+		});
 });
