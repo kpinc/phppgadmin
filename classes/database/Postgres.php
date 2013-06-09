@@ -1066,7 +1066,12 @@ class Postgres extends ADODB_base {
 			SELECT
 			  c.relname, n.nspname, u.usename AS relowner,
 			  pg_catalog.obj_description(c.oid, 'pg_class') AS relcomment,
-			  (SELECT spcname FROM pg_catalog.pg_tablespace pt WHERE pt.oid=c.reltablespace) AS tablespace
+			  (SELECT spcname FROM pg_catalog.pg_tablespace pt WHERE pt.oid=c.reltablespace) AS tablespace,
+              coalesce (
+				(SELECT relname 
+					FROM pg_catalog.pg_class c2, pg_catalog.pg_index i2
+					WHERE c.oid = i2.indrelid AND c2.oid = i2.indexrelid AND indisclustered)
+				, '') AS clusteredindex
 			FROM pg_catalog.pg_class c
 			     LEFT JOIN pg_catalog.pg_user u ON u.usesysid = c.relowner
 			     LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
@@ -1863,6 +1868,31 @@ class Postgres extends ADODB_base {
 		}
 
 	/**
+	 * Alter a table's clustered index
+	 * /!\ this function is called from _alterTable which take care of escaping fields
+	 * @param $tblrs The table RecordSet returned by getTable()
+	 * @param $clusteredIndex The new table's clustered index, '' if no cluster
+	 * @return 0 success
+	 */
+	function alterTableClusteredIndex($tblrs, $clusteredIndex = null) {
+		/* vars cleaned in _alterTable */
+		if ($tblrs->fields['clusteredindex'] != $clusteredIndex) {
+			// If the clustered index has been changed, then do the alteration.
+			$f_schema = $this->_schema;
+			$this->fieldClean($f_schema);
+	
+			if (!empty($clusteredIndex)) {
+				$sql = "ALTER TABLE \"{$f_schema}\".\"{$tblrs->fields['relname']}\" CLUSTER ON \"{$clusteredIndex}\"";
+			} else {
+				$sql = "ALTER TABLE \"{$f_schema}\".\"{$tblrs->fields['relname']}\" SET WITHOUT CLUSTER";
+			}
+
+			return $this->execute($sql);
+		}
+		return 0;
+	}
+
+	/**
 	 * Protected method which alter a table
 	 * SHOULDN'T BE CALLED OUTSIDE OF A TRANSACTION
 	 * @param $tblrs The table recordSet returned by getTable()
@@ -1871,15 +1901,17 @@ class Postgres extends ADODB_base {
 	 * @param $schema The new schema for the table
 	 * @param $comment The comment on the table
 	 * @param $tablespace The new tablespace for the table ('' means leave as is)
+	 * @param $clusteredIndex The name of the clustered index ('' means no clustered index)
 	 * @return 0 success
 	 * @return -3 rename error
 	 * @return -4 comment error
 	 * @return -5 owner error
 	 * @return -6 tablespace error
 	 * @return -7 schema error
+	 * @return -8 clustered index error
 	 */
 	protected
-	function _alterTable($tblrs, $name, $owner, $schema, $comment, $tablespace) {
+	function _alterTable($tblrs, $name, $owner, $schema, $comment, $tablespace, $clusteredIndex) {
 
 		$this->fieldArrayClean($tblrs->fields);
 
@@ -1907,7 +1939,12 @@ class Postgres extends ADODB_base {
 		$status = $this->alterTableSchema($tblrs, $schema);
 		if ($status != 0) return -7;
 
+		// Clustered index
+		$this->fieldClean($clusteredIndex);
+		$status = $this->alterTableClusteredIndex($tblrs, $clusteredIndex);
+		if ($status != 0) return -8;
 		return 0;
+
 	}
 
 	/**
@@ -1918,12 +1955,13 @@ class Postgres extends ADODB_base {
 	 * @param $schema The new schema for the table
 	 * @param $comment The comment on the table
 	 * @param $tablespace The new tablespace for the table ('' means leave as is)
+	 * @param $clusteredIndex The name of the clustered index ('' means no clustered index)
 	 * @return 0 success
 	 * @return -1 transaction error
 	 * @return -2 get existing table error
 	 * @return $this->_alterTable error code
 	 */
-	function alterTable($table, $name, $owner, $schema, $comment, $tablespace) {
+	function alterTable($table, $name, $owner, $schema, $comment, $tablespace, $clusteredIndex) {
 
 		$data = $this->getTable($table);
 
@@ -1936,7 +1974,7 @@ class Postgres extends ADODB_base {
 			return -1;
 		}
 
-		$status = $this->_alterTable($data, $name, $owner, $schema, $comment, $tablespace);
+		$status = $this->_alterTable($data, $name, $owner, $schema, $comment, $tablespace, $clusteredIndex);
 
 		if ($status != 0) {
 			$this->rollbackTransaction();
@@ -7956,6 +7994,7 @@ class Postgres extends ADODB_base {
 	function hasAlterSequenceSchema() { return true; }
 	function hasAlterSequenceStart() { return true; }
 	function hasAlterTableSchema() { return true; }
+	function hasAlterTableNocluster() { return true; }
 	function hasAutovacuum() { return true; }
 	function hasCreateTableLike() { return true; }
 	function hasCreateTableLikeWithConstraints() { return true; }

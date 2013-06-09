@@ -22,8 +22,9 @@
 		// Default tablespace to null if it isn't set
 		if (!isset($_POST['tablespace'])) $_POST['tablespace'] = null;
 		if (!isset($_POST['newschema'])) $_POST['newschema'] = null;
+		if (!isset($_POST['clusteredindex'])) $_POST['clusteredindex'] = null;
 
-		$status = $data->alterTable($_POST['table'], $_POST['name'], $_POST['owner'], $_POST['newschema'], $_POST['comment'], $_POST['tablespace']);
+		$status = $data->alterTable($_POST['table'], $_POST['name'], $_POST['owner'], $_POST['newschema'], $_POST['comment'], $_POST['tablespace'], $_POST['clusteredindex']);
 		if ($status == 0) {
 			// If table has been renamed, need to change to the new name and
 			// reload the browser frame.
@@ -70,6 +71,7 @@
 			if (!isset($_POST['newschema'])) $_POST['newschema'] = $table->fields['nspname'];
 			if (!isset($_POST['comment'])) $_POST['comment'] = $table->fields['relcomment'];
 			if ($data->hasTablespaces() && !isset($_POST['tablespace'])) $_POST['tablespace'] = $table->fields['tablespace'];
+			if (!isset($_POST['clusteredindex'])) $_POST['clusteredindex'] = $table->fields['clusteredindex'];
 
 			echo "<form action=\"tblproperties.php\" method=\"post\">\n";
 			echo "<table>\n";
@@ -120,10 +122,31 @@
 				echo "\t\t\t</select>\n\t\t</td>\n\t</tr>\n";
 			}
 
+			// Clustered index
+			if ($data->hasAlterTableNocluster()) {
+				$indexes = $data->getIndexes($_REQUEST['table']);
+				if ($indexes->recordCount() > 0) {
+					echo "\t<tr>\n\t\t<th class=\"data left\">{$lang['strclusteredindex']}</th>\n";
+					echo "\t\t<td class=\"data1\">\n\t\t\t<select name=\"clusteredindex\">\n";
+					// Always offer the default (empty) option
+					echo "\t\t\t\t<option value=\"\"",
+						($_POST['clusteredindex'] == '') ? ' selected="selected"' : '', "></option>\n";
+					// Display all indexes
+					while (!$indexes->EOF) {
+						$indname = htmlspecialchars($indexes->fields['indname']);
+						echo "\t\t\t\t<option value=\"{$indname}\"",
+							($indname == $_POST['clusteredindex']) ? ' selected="selected"' : '', ">{$indname}</option>\n";
+						$indexes->moveNext();
+					}
+					echo "\t\t\t</select>\n\t\t</td>\n\t</tr>\n";
+				}
+			}
+
 			echo "<tr><th class=\"data left\">{$lang['strcomment']}</th>\n";
 			echo "<td class=\"data1\">";
 			echo "<textarea rows=\"3\" cols=\"32\" name=\"comment\">",
 				htmlspecialchars($_POST['comment']), "</textarea></td></tr>\n";
+
 			echo "</table>\n";
 			echo "<p><input type=\"hidden\" name=\"action\" value=\"alter\" />\n";
 			echo "<input type=\"hidden\" name=\"table\" value=\"", htmlspecialchars($_REQUEST['table']), "\" />\n";

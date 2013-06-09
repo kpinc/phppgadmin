@@ -99,6 +99,7 @@
 	$lang['strvacuum'] = 'Vacuum';
 	$lang['stranalyze'] = 'Analyze';
 	$lang['strclusterindex'] = 'Cluster';
+	$lang['strclusteredindex'] = 'Clustered index';
 	$lang['strclustered'] = 'Clustered?';
 	$lang['strreindex'] = 'Reindex';
 	$lang['strexecute'] = 'Execute';

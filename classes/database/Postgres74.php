@@ -404,7 +404,12 @@ class Postgres74 extends Postgres80 {
 		$sql = "
 			SELECT
 			  c.relname, n.nspname, u.usename AS relowner,
-			  pg_catalog.obj_description(c.oid, 'pg_class') AS relcomment
+			  pg_catalog.obj_description(c.oid, 'pg_class') AS relcomment,
+              coalesce (
+				(SELECT relname 
+					FROM pg_catalog.pg_class c2, pg_catalog.pg_index i2
+					WHERE c.oid = i2.indrelid AND c2.oid = i2.indexrelid AND indisclustered)
+				, '') AS clusteredindex 
 			FROM pg_catalog.pg_class c
 			     LEFT JOIN pg_catalog.pg_user u ON u.usesysid = c.relowner
 			     LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
@@ -623,6 +628,7 @@ class Postgres74 extends Postgres80 {
 	// Capabilities
 
 	function hasAlterColumnType() { return false; }
+	function hasAlterTableNocluster() { return false; }
 	function hasCreateFieldWithConstraints() { return false; }
 	function hasAlterDatabaseOwner() { return false; }
 	function hasAlterSchemaOwner() { return false; }
