@@ -1881,10 +1881,10 @@ class Postgres extends ADODB_base {
 			$f_schema = $this->_schema;
 			$this->fieldClean($f_schema);
 	
-			if (!empty($clusteredIndex)) {
-				$sql = "ALTER TABLE \"{$f_schema}\".\"{$tblrs->fields['relname']}\" CLUSTER ON \"{$clusteredIndex}\"";
-			} else {
+			if (empty($clusteredIndex)) {
 				$sql = "ALTER TABLE \"{$f_schema}\".\"{$tblrs->fields['relname']}\" SET WITHOUT CLUSTER";
+			} else {
+				$sql = "ALTER TABLE \"{$f_schema}\".\"{$tblrs->fields['relname']}\" CLUSTER ON \"{$clusteredIndex}\"";
 			}
 
 			return $this->execute($sql);
