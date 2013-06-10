@@ -1066,7 +1066,7 @@ class Postgres extends ADODB_base {
 			SELECT
 			  c.relname, n.nspname, u.usename AS relowner,
 			  pg_catalog.obj_description(c.oid, 'pg_class') AS relcomment,
-			  (SELECT spcname FROM pg_catalog.pg_tablespace pt WHERE pt.oid=c.reltablespace) AS tablespace,
+			  (SELECT pt.spcname FROM pg_catalog.pg_tablespace pt WHERE pt.oid=c.reltablespace) AS tablespace,
               coalesce (
 				(SELECT c2.relname 
 					FROM pg_catalog.pg_class c2, pg_catalog.pg_index i2
