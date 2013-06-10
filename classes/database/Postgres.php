@@ -1874,7 +1874,7 @@ class Postgres extends ADODB_base {
 	 * @param $clusteredIndex The table's new clustered index, '' if no cluster
 	 * @return 0 success
 	 */
-	function alterTableClusteredIndex($tblrs, $clusteredIndex = null) {
+	function alterTableClusteredIndex($tblrs, $clusteredIndex) {
 		/* vars cleaned in _alterTable */
 		if ($tblrs->fields['clusteredindex'] != $clusteredIndex) {
 			// If the clustered index has been changed, then do the alteration.
