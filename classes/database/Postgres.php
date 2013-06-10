@@ -1068,9 +1068,9 @@ class Postgres extends ADODB_base {
 			  pg_catalog.obj_description(c.oid, 'pg_class') AS relcomment,
 			  (SELECT spcname FROM pg_catalog.pg_tablespace pt WHERE pt.oid=c.reltablespace) AS tablespace,
               coalesce (
-				(SELECT relname 
+				(SELECT c2.relname 
 					FROM pg_catalog.pg_class c2, pg_catalog.pg_index i2
-					WHERE c.oid = i2.indrelid AND c2.oid = i2.indexrelid AND indisclustered)
+					WHERE c.oid = i2.indrelid AND c2.oid = i2.indexrelid AND i2.indisclustered)
 				, '') AS clusteredindex
 			FROM pg_catalog.pg_class c
 			     LEFT JOIN pg_catalog.pg_user u ON u.usesysid = c.relowner

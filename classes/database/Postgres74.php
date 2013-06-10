@@ -406,9 +406,9 @@ class Postgres74 extends Postgres80 {
 			  c.relname, n.nspname, u.usename AS relowner,
 			  pg_catalog.obj_description(c.oid, 'pg_class') AS relcomment,
               coalesce (
-				(SELECT relname 
+				(SELECT c2.relname 
 					FROM pg_catalog.pg_class c2, pg_catalog.pg_index i2
-					WHERE c.oid = i2.indrelid AND c2.oid = i2.indexrelid AND indisclustered)
+					WHERE c.oid = i2.indrelid AND c2.oid = i2.indexrelid AND i2.indisclustered)
 				, '') AS clusteredindex 
 			FROM pg_catalog.pg_class c
 			     LEFT JOIN pg_catalog.pg_user u ON u.usesysid = c.relowner
