@@ -1871,7 +1871,7 @@ class Postgres extends ADODB_base {
 	 * Alter a table's clustered index
 	 * /!\ this function is called from _alterTable which take care of escaping fields
 	 * @param $tblrs The table RecordSet returned by getTable()
-	 * @param $clusteredIndex The new table's clustered index, '' if no cluster
+	 * @param $clusteredIndex The table's new clustered index, '' if no cluster
 	 * @return 0 success
 	 */
 	function alterTableClusteredIndex($tblrs, $clusteredIndex = null) {
