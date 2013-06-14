@@ -20,6 +20,10 @@
 		
 		// Bring to the front always
 		echo "<body onload=\"window.focus();\">\n";
+		
+		// No tabs, but we want to save our url in case we need
+		// to return after re-logging in.
+		$misc->setLastTabURL('history', 'history');
 	
 		echo "<form action=\"history.php\" method=\"post\">\n";
 		$misc->printConnection($onchange);

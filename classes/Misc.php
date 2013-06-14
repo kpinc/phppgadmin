@@ -1193,6 +1193,18 @@
 					);
 					break;
 
+				case 'history':  // One virtual tab, we never display it.
+					$tabs = array(
+						'history' => array (
+							'url'   => 'history.php',
+							'urlvars' => array (
+								'action' => 'pophistory',
+								'subject' => 'history',
+							),
+						),
+					);
+					break;
+
 				case 'column':
 					$tabs = array(
 						'properties' => array (
@@ -1328,7 +1340,8 @@
 							'href' => array (
 								'url' => 'history.php',
 								'urlvars' => array_merge($reqvars, array (
-									'action' => 'pophistory'
+									'action' => 'pophistory',
+									'subject' => 'history',
 								))
 							),
 							'id' => 'toplink_history',
