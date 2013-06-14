@@ -1293,7 +1293,13 @@
 
 			$tabs = $this->getNavTabs($section);
 
-			if (isset($_SESSION['webdbLastTab'][$section]) && isset($tabs[$_SESSION['webdbLastTab'][$section]]))
+			if ($section == 'popup') {   // Choose tab by action.
+				if (isset($_REQUEST['action'])) {
+					$tab = $tabs[$_REQUEST['action']];
+				} else {
+					$tab = reset($tabs);
+				}
+			} elseif (isset($_SESSION['webdbLastTab'][$section]) && isset($tabs[$_SESSION['webdbLastTab'][$section]]))
 				$tab = $tabs[$_SESSION['webdbLastTab'][$section]];
 			else
 				$tab = reset($tabs);
