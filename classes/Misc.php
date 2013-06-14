@@ -670,7 +670,7 @@
 			global $misc, $conf, $data, $lang;
 
 			if (is_string($tabs)) {
-				$_SESSION['webdbLastTab'][$tabs] = $activetab;
+				$this->setLastTabURL($tabs, $activetab);
 				$tabs = $this->getNavTabs($tabs);
 			}
 
@@ -1260,6 +1260,17 @@
 			$plugin_manager->do_hook('tabs', $plugin_functions_parameters);
 
 			return $tabs;
+		}
+
+		/**
+		 * Set the URL for the last active tab of a particular tab bar.
+		 * @param $section  String identifying the "page" with the tabs.
+		 *                  ('table', 'view', whatever)
+		 * @param $activetab  String identifying the tab that's active.
+		 */
+		function setLastTabURL($section, $activetab) {
+			$_SESSION['webdbLastTab'][$section] = $activetab;
+			return;
 		}
 
 		/**
