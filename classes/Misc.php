@@ -1327,7 +1327,8 @@
 							'href' => array (
 								'url' => 'sqledit.php',
 								'urlvars' => array_merge($reqvars, array (
-									'action' => 'sql'
+									'action' => 'sql',
+									'subject' => 'popup',
 								))
 							),
 							'target' => "sqledit",
@@ -1353,7 +1354,8 @@
 							'href' => array (
 								'url' => 'sqledit.php',
 								'urlvars' => array_merge($reqvars, array (
-									'action' => 'find'
+									'action' => 'find',
+									'subject' => 'popup',
 								))
 							),
 							'target' => "sqledit",
