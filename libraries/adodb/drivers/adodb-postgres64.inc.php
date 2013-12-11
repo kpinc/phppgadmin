@@ -191,7 +191,7 @@ a different OID if a database must be reloaded. */
 		if (!$ok) return $this->RollbackTrans();
 		
 		$this->transCnt -= 1;
-		return @pg_Exec($this->_connectionID, "commit");
+		return $this->Execute("commit");
 	}
 	
 	// returns true/false
